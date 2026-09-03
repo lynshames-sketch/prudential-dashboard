@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminal de Risque Bancaire & Surveillance Réglementaire | Dr. Saubaber Longang Gamo</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bankDark: '#030712',
+            bankCard: '#0f172a',
+            bankBorder: '#1e293b',
+            accentCyan: '#06b6d4',
+            accentEmerald: '#10b981',
+            accentAmber: '#f59e0b',
+            accentRose: '#f43f5e'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            heading: ['"Outfit"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* Custom terminal scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #030712; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    
+    .pulse-glow {
+      box-shadow: 0 0 25px rgba(244, 63, 94, 0.4);
+      animation: pulseGlow 2s infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(244, 63, 94, 0.4); }
+      50% { box-shadow: 0 0 35px rgba(244, 63, 94, 0.8); }
+    }
+  </style>
+</head>
+<body class="bg-bankDark text-slate-200 font-sans min-h-screen antialiased flex flex-col">
+
+  <!-- TOP INSTITUTIONAL BAR -->
+  <header class="border-b border-bankBorder bg-bankDark/90 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center text-white font-mono font-bold shadow-lg shadow-cyan-500/20">
+          <i class="fa-solid fa-building-columns"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-heading font-bold text-lg text-white tracking-wide">PRUDENTIAL RISK ENGINE</h1>
+            <span class="text-xs px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-400 font-mono">v4.2 • IFRS 9 / BÂLE IV</span>
+          </div>
+          <p class="text-xs text-slate-400">Dr. Saubaber Longang Gamo • Modélisation Économétrique & Risques Financiers</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="hidden md:flex items-center gap-2 text-xs font-mono bg-bankCard px-3 py-1.5 rounded-md border border-bankBorder">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="text-slate-300">Antigravity Python Engine : Connecté</span>
+        </div>
+        <a href="../portfolio-saubaber-longang/index.html" class="text-xs font-medium text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded border border-bankBorder hover:bg-slate-800">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Retour Portfolio</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION ONGLET STITCH -->
+  <div class="border-b border-bankBorder bg-bankCard/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-4">
+      <button id="tabRiskBtn" onclick="switchTab('risk')" class="py-3 px-4 font-heading font-semibold text-sm border-b-2 border-cyan-500 text-cyan-400 flex items-center gap-2 transition-all">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>1. Scoring Crédit & IFRS 9 (Risk Management)</span>
+      </button>
+      <button id="tabAmlBtn" onclick="switchTab('aml')" class="py-3 px-4 font-heading font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all">
+        <i class="fa-solid fa-network-wired"></i>
+        <span>2. Surveillance Blanchiment (AML / KYC Network)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+    <!-- ============================================================= -->
+    <!-- SECTION 1 : RISK MANAGEMENT & SCORING IFRS 9 -->
+    <!-- ============================================================= -->
+    <div id="sectionRisk" class="space-y-6">
+      
+      <!-- Bandeau Contextuel -->
+      <div class="bg-gradient-to-r from-bankCard via-slate-900 to-bankCard p-4 rounded-xl border border-bankBorder flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-cyan-400 font-mono">Modélisation Prudentielle du Risque de Contrepartie</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Simulation en temps réel de la Probabilité de Défaut (PD), de la Perte en cas de Défaut (LGD), de la perte attendue (ECL) et des exigences de fonds propres Bâle IV.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-400 font-mono">Choc Macro :</span>
+          <div class="inline-flex rounded-lg p-0.5 bg-bankDark border border-bankBorder text-xs font-mono">
+            <button onclick="setMacro('normal')" id="btnMacroNormal" class="px-2.5 py-1 rounded bg-cyan-600 text-white font-medium transition-all">Normal</button>
+            <button onclick="setMacro('modere')" id="btnMacroModere" class="px-2.5 py-1 rounded text-slate-400 hover:text-white transition-all">Modéré (-2% PIB)</button>
+            <button onclick="setMacro('severe')" id="btnMacroSevere" class="px-2.5 py-1 rounded text-slate-400 hover:text-white transition-all">Sévère (-5% PIB)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grille Calculateur & Résultats -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- COLONNE GAUCHE : SLIDERS & PARAMÈTRES (5 Cols) -->
+        <div class="lg:col-span-5 bg-bankCard rounded-2xl border border-bankBorder p-6 space-y-6 shadow-xl">
+          <div class="flex items-center justify-between border-b border-bankBorder pb-3">
+            <h3 class="font-heading font-bold text-white text-base flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-cyan-400"></i>
+              <span>Paramètres du Dossier Emprunteur</span>
+            </h3>
+            <span class="text-xs font-mono text-slate-400">Inputs Économétriques</span>
+          </div>
+
+          <!-- Slider 1 : Montant du Prêt (EAD) -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs font-mono">
+              <span class="text-slate-300">Exposition au Défaut (EAD / Prêt)</span>
+              <span class="text-cyan-400 font-bold" id="valLoan">250 000 $</span>
+            </div>
+            <input type="range" id="inputLoan" min="50000" max="2000000" step="25000" value="250000" class="w-full accent-cyan-500 bg-bankDark h-2 rounded cursor-pointer" oninput="updateRiskCalc()">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>50k $</span>
+              <span>1M $</span>
+              <span>2M $</span>
+            </div>
+          </div>
+
+          <!-- Slider 2 : Ratio Dette / Revenu (DTI) -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs font-mono">
+              <span class="text-slate-300">Ratio Dette / Revenu (DTI)</span>
+              <span class="text-cyan-400 font-bold" id="valDTI">35 %</span>
+            </div>
+            <input type="range" id="inputDTI" min="15" max="65" step="1" value="35" class="w-full accent-cyan-500 bg-bankDark h-2 rounded cursor-pointer" oninput="updateRiskCalc()">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>15% (Faible)</span>
+              <span>40% (Seuil Prudentiel)</span>
+              <span>65% (Critique)</span>
+            </div>
+          </div>
+
+          <!-- Slider 3 : Couverture Collatérale -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs font-mono">
+              <span class="text-slate-300">Garanties & Collatéral (Atténuation LGD)</span>
+              <span class="text-cyan-400 font-bold" id="valCollateral">80 %</span>
+            </div>
+            <input type="range" id="inputCollateral" min="0" max="150" step="5" value="80" class="w-full accent-cyan-500 bg-bankDark h-2 rounded cursor-pointer" oninput="updateRiskCalc()">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>0% (Sans nantissement)</span>
+              <span>100% (Couvert)</span>
+              <span>150% (Sur-garanti)</span>
+            </div>
+          </div>
+
+          <!-- Slider 4 : Score de Crédit -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs font-mono">
+              <span class="text-slate-300">Score de Crédit (FICO / Interne BEAC)</span>
+              <span class="text-cyan-400 font-bold" id="valScore">720</span>
+            </div>
+            <input type="range" id="inputScore" min="400" max="850" step="10" value="720" class="w-full accent-cyan-500 bg-bankDark h-2 rounded cursor-pointer" oninput="updateRiskCalc()">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>400 (Défaut élevé)</span>
+              <span>680 (Prime)</span>
+              <span>850 (Excellence)</span>
+            </div>
+          </div>
+
+          <!-- Note Méthodologique -->
+          <div class="p-3.5 rounded-xl bg-slate-950 border border-bankBorder text-xs text-slate-400 space-y-1">
+            <div class="font-mono text-cyan-400 font-semibold flex items-center gap-1.5">
+              <i class="fa-solid fa-code"></i> Formule Logistique Économétrique :
+            </div>
+            <p class="font-mono text-[11px] text-slate-300">
+              $$PD = \frac{1}{1 + e^{-(1.8 + 3.2 \cdot DTI - 5.5 \cdot Score_{norm} + \Delta Macro)}}$$
+            </p>
+            <p class="text-[11px] text-slate-400">Le modèle reflète les dégradations asymétriques observées en phase de contraction macroéconomique.</p>
+          </div>
+        </div>
+
+        <!-- COLONNE DROITE : TABLEAU DE BORD PRUDENTIEL (7 Cols) -->
+        <div class="lg:col-span-7 space-y-6">
+
+          <!-- BANNIÈRE DÉCISION RÉGLEMENTAIRE -->
+          <div id="decisionBanner" class="p-5 rounded-2xl border transition-all duration-300 bg-emerald-950/40 border-emerald-800/80 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <div id="decisionIcon" class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div>
+                <div class="text-xs font-mono uppercase tracking-wider text-emerald-300" id="decisionStage">Stage 1 IFRS 9 (Actif Sain)</div>
+                <h4 class="text-xl font-heading font-extrabold text-white" id="decisionText">DOSSIER APPROUVÉ</h4>
+                <p class="text-xs text-slate-300" id="decisionSub">Horizon de provisionnement standard : 12 mois.</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-xs font-mono text-slate-400">Provision IFRS 9 (ECL)</span>
+              <div class="text-2xl font-mono font-bold text-white" id="valEclHeader">1 245 $</div>
+            </div>
+          </div>
+
+          <!-- 4 CARTES MÉTRIQUES CLÉS -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="bg-bankCard p-4 rounded-xl border border-bankBorder">
+              <div class="text-[11px] font-mono text-slate-400">Probabilité Défaut (PD)</div>
+              <div class="text-xl font-mono font-bold text-cyan-400 mt-1" id="kpiPD">1.48 %</div>
+              <div class="text-[10px] text-slate-500 mt-0.5" id="kpiPDSub">Horizon 12 mois</div>
+            </div>
+            
+            <div class="bg-bankCard p-4 rounded-xl border border-bankBorder">
+              <div class="text-[11px] font-mono text-slate-400">Perte au Défaut (LGD)</div>
+              <div class="text-xl font-mono font-bold text-slate-200 mt-1" id="kpiLGD">17.00 %</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">Post-collatéral</div>
+            </div>
+
+            <div class="bg-bankCard p-4 rounded-xl border border-bankBorder">
+              <div class="text-[11px] font-mono text-slate-400">Actifs Pondérés (RWA)</div>
+              <div class="text-xl font-mono font-bold text-indigo-400 mt-1" id="kpiRWA">45 250 $</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">Bâle IV IRB</div>
+            </div>
+
+            <div class="bg-bankCard p-4 rounded-xl border border-bankBorder">
+              <div class="text-[11px] font-mono text-slate-400">Fonds Propres CET1</div>
+              <div class="text-xl font-mono font-bold text-emerald-400 mt-1" id="kpiCET1">4 751 $</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">Coussin à 10.5%</div>
+            </div>
+          </div>
+
+          <!-- WATERFALL RISK DECOMPOSITION CHART -->
+          <div class="bg-bankCard rounded-2xl border border-bankBorder p-6 shadow-xl space-y-4">
+            <div class="flex items-center justify-between">
+              <h4 class="font-heading font-bold text-white text-sm flex items-center gap-2">
+                <i class="fa-solid fa-chart-waterfall text-cyan-400"></i>
+                <span>Décomposition en Cascade du Risque (Waterfall Effect)</span>
+              </h4>
+              <span class="text-xs font-mono text-slate-400">Facteurs Explicatifs</span>
+            </div>
+
+            <div class="space-y-3 pt-2 font-mono text-xs">
+              <!-- Bar 1 : Risque de Base -->
+              <div class="space-y-1">
+                <div class="flex justify-between text-slate-400 text-[11px]">
+                  <span>1. Taux de Base Réglementaire</span>
+                  <span class="text-slate-200">+1.80 %</span>
+                </div>
+                <div class="w-full bg-bankDark h-2 rounded-full overflow-hidden">
+                  <div class="bg-slate-500 h-full w-[25%]"></div>
+                </div>
+              </div>
+
+              <!-- Bar 2 : Pénalité Endettement DTI -->
+              <div class="space-y-1">
+                <div class="flex justify-between text-slate-400 text-[11px]">
+                  <span>2. Impact Endettement (DTI)</span>
+                  <span id="waterfallDTI" class="text-amber-400">+1.12 %</span>
+                </div>
+                <div class="w-full bg-bankDark h-2 rounded-full overflow-hidden">
+                  <div id="barDTI" class="bg-amber-500 h-full w-[35%] transition-all duration-300"></div>
+                </div>
+              </div>
+
+              <!-- Bar 3 : Atténuation Score Crédit -->
+              <div class="space-y-1">
+                <div class="flex justify-between text-slate-400 text-[11px]">
+                  <span>3. Atténuation Score Emprunteur</span>
+                  <span id="waterfallScore" class="text-emerald-400">-3.20 %</span>
+                </div>
+                <div class="w-full bg-bankDark h-2 rounded-full overflow-hidden">
+                  <div id="barScore" class="bg-emerald-500 h-full w-[65%] transition-all duration-300"></div>
+                </div>
+              </div>
+
+              <!-- Bar 4 : Choc Macroéconomique -->
+              <div class="space-y-1">
+                <div class="flex justify-between text-slate-400 text-[11px]">
+                  <span>4. Choc Macroéconomique (Stress Testing)</span>
+                  <span id="waterfallMacro" class="text-rose-400">0.00 %</span>
+                </div>
+                <div class="w-full bg-bankDark h-2 rounded-full overflow-hidden">
+                  <div id="barMacro" class="bg-rose-500 h-full w-[0%] transition-all duration-300"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-bankBorder flex items-center justify-between text-xs font-mono">
+              <span class="text-slate-400">Probabilité Finale de Défaut Déduite :</span>
+              <span id="waterfallFinalPD" class="text-base font-bold text-cyan-400">1.48 %</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- SECTION 2 : SURVEILLANCE BLANCHIMENT (AML / KYC GRAPH) -->
+    <!-- ============================================================= -->
+    <div id="sectionAml" class="hidden space-y-6">
+      
+      <div class="bg-gradient-to-r from-bankCard via-slate-900 to-bankCard p-4 rounded-xl border border-bankBorder flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-rose-400 font-mono">Détection d'Anomalies Financières & Schtroumpfage (Smurfing)</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Topologie des transactions en temps réel avec algorithme de regroupement de comptes suspects sous le seuil légal de 10 000 $.</p>
+        </div>
+        <button onclick="triggerAmlAlert()" id="btnTriggerAml" class="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-mono text-xs font-bold transition-all shadow-lg shadow-rose-900/30 flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Exécuter Détection Smurfing</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- GRAPHE INTERACTIF CANVASES (7 Cols) -->
+        <div class="lg:col-span-7 bg-bankCard rounded-2xl border border-bankBorder p-6 shadow-xl space-y-4">
+          <div class="flex items-center justify-between border-b border-bankBorder pb-3">
+            <h3 class="font-heading font-bold text-white text-base flex items-center gap-2">
+              <i class="fa-solid fa-diagram-project text-cyan-400"></i>
+              <span>Graphe des Nœuds Transactionnels (Live Stream)</span>
+            </h3>
+            <span id="graphStatus" class="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800">Flux Nominal</span>
+          </div>
+
+          <div class="relative bg-bankDark rounded-xl border border-bankBorder h-[380px] overflow-hidden flex items-center justify-center">
+            <canvas id="amlCanvas" width="650" height="380" class="w-full h-full"></canvas>
+            
+            <!-- Légende -->
+            <div class="absolute bottom-3 left-3 bg-bankCard/80 backdrop-blur p-2.5 rounded-lg border border-bankBorder text-[10px] font-mono space-y-1">
+              <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Nœuds Déposants (&lt; 10 000 $)</div>
+              <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Compte Pivot Central (Cpt-7782)</div>
+              <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Destination Offshore</div>
+            </div>
+          </div>
+
+          <div class="text-xs text-slate-400 flex items-center justify-between font-mono">
+            <span>Algorithme : Louvain Community Detection + Seuil Flottant</span>
+            <span>Vélocité : 4 tx en 4h15m</span>
+          </div>
+        </div>
+
+        <!-- RAPPORT D'ENQUÊTE & DOS (5 Cols) -->
+        <div class="lg:col-span-5 bg-bankCard rounded-2xl border border-bankBorder p-6 shadow-xl space-y-4">
+          <div class="flex items-center justify-between border-b border-bankBorder pb-3">
+            <h3 class="font-heading font-bold text-white text-base flex items-center gap-2">
+              <i class="fa-solid fa-file-shield text-rose-400"></i>
+              <span>Déclaration d'Opération Suspecte (DOS)</span>
+            </h3>
+            <span class="text-xs font-mono text-slate-400">CANAFE / BEAC</span>
+          </div>
+
+          <div id="dosEmptyState" class="py-16 text-center space-y-3">
+            <i class="fa-solid fa-shield-halved text-4xl text-slate-600"></i>
+            <p class="text-xs text-slate-400 max-w-xs mx-auto font-mono">Aucun signalement d'anomalie critique n'a été déclenché. Cliquez sur « Exécuter Détection Smurfing » pour lancer l'analyse de graphe.</p>
+          </div>
+
+          <div id="dosReportBox" class="hidden space-y-4">
+            <div class="p-3.5 rounded-xl bg-rose-950/40 border border-rose-800/60 text-xs font-mono space-y-2">
+              <div class="flex justify-between items-center text-rose-300 font-bold">
+                <span>ALERTE FRAUDE : SCHTROUMPFAGE</span>
+                <span class="text-[10px] bg-rose-900 px-2 py-0.5 rounded text-white">CRITIQUE</span>
+              </div>
+              <p class="text-[11px] text-slate-300">Compte Pivot : <strong class="text-white">Cpt-Pivot-7782</strong></p>
+              <p class="text-[11px] text-slate-300">Réf. Réglementaire : <strong class="text-cyan-400">DOS-2026-0903-882A</strong></p>
+            </div>
+
+            <div class="space-y-2 text-xs font-mono">
+              <div class="text-slate-400 font-bold">Signaux de Risque Détectés :</div>
+              <ul class="space-y-1.5 text-[11px] text-slate-300">
+                <li class="flex items-start gap-1.5"><i class="fa-solid fa-circle-exclamation text-rose-400 mt-0.5"></i> 4 dépôts de 9 450 $, 9 800 $, 9 200 $ et 9 650 $ (Total: 38 100 $) en &lt; 5h.</li>
+                <li class="flex items-start gap-1.5"><i class="fa-solid fa-circle-exclamation text-rose-400 mt-0.5"></i> Volonté manifeste de contourner le seuil légal de 10 000 $.</li>
+                <li class="flex items-start gap-1.5"><i class="fa-solid fa-circle-exclamation text-rose-400 mt-0.5"></i> Virement sortant immédiat vers un compte étranger non-coopératif.</li>
+              </ul>
+            </div>
+
+            <div class="pt-2 border-t border-bankBorder">
+              <div class="text-[11px] font-mono text-slate-400 mb-2">Recommandation Prudentielle :</div>
+              <div class="p-3 rounded bg-bankDark border border-bankBorder text-xs text-amber-300 font-mono">
+                Gel conservatoire de 48 heures requis et transmission immédiate à l'Unité de Renseignement Financier.
+              </div>
+            </div>
+
+            <button onclick="alert('Rapport DOS-2026-0903-882A exporté avec succès pour conformité.')" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded font-mono text-xs font-semibold border border-bankBorder transition-colors flex items-center justify-center gap-2">
+              <i class="fa-solid fa-download"></i>
+              <span>Télécharger le Dossier d'Investigation</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- PIED DE PAGE TECHNIQUE -->
+  <footer class="border-t border-bankBorder bg-bankDark/90 py-6 text-xs text-slate-500 font-mono">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        <span class="text-slate-400">Developpé par Saubaber Longang Gamo (Ph.D.)</span>
+      </div>
+      <div class="flex gap-4">
+        <a href="https://www.linkedin.com/in/saubaber-longang-18416216a" target="_blank" class="hover:text-cyan-400 transition-colors">LinkedIn</a>
+        <span>Bâle III/IV • IFRS 9 • AML/CFT</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT LOGIQUE & CALCULATEUR -->
+  <script>
+    let currentMacro = 'normal';
+
+    function switchTab(tab) {
+      const riskSec = document.getElementById('sectionRisk');
+      const amlSec = document.getElementById('sectionAml');
+      const riskBtn = document.getElementById('tabRiskBtn');
+      const amlBtn = document.getElementById('tabAmlBtn');
+
+      if (tab === 'risk') {
+        riskSec.classList.remove('hidden');
+        amlSec.classList.add('hidden');
+        riskBtn.className = 'py-3 px-4 font-heading font-semibold text-sm border-b-2 border-cyan-500 text-cyan-400 flex items-center gap-2 transition-all';
+        amlBtn.className = 'py-3 px-4 font-heading font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all';
+      } else {
+        riskSec.classList.add('hidden');
+        amlSec.classList.remove('hidden');
+        amlBtn.className = 'py-3 px-4 font-heading font-semibold text-sm border-b-2 border-rose-500 text-rose-400 flex items-center gap-2 transition-all';
+        riskBtn.className = 'py-3 px-4 font-heading font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all';
+        drawAmlGraph(false);
+      }
+    }
+
+    function setMacro(mode) {
+      currentMacro = mode;
+      const bNorm = document.getElementById('btnMacroNormal');
+      const bMod = document.getElementById('btnMacroModere');
+      const bSev = document.getElementById('btnMacroSevere');
+
+      [bNorm, bMod, bSev].forEach(b => b.className = "px-2.5 py-1 rounded text-slate-400 hover:text-white transition-all");
+      if (mode === 'normal') bNorm.className = "px-2.5 py-1 rounded bg-cyan-600 text-white font-medium transition-all";
+      if (mode === 'modere') bMod.className = "px-2.5 py-1 rounded bg-amber-600 text-white font-medium transition-all";
+      if (mode === 'severe') bSev.className = "px-2.5 py-1 rounded bg-rose-600 text-white font-medium transition-all";
+
+      updateRiskCalc();
+    }
+
+    function updateRiskCalc() {
+      const loan = parseFloat(document.getElementById('inputLoan').value);
+      const dti = parseFloat(document.getElementById('inputDTI').value) / 100;
+      const collateral = parseFloat(document.getElementById('inputCollateral').value) / 100;
+      const score = parseFloat(document.getElementById('inputScore').value);
+
+      document.getElementById('valLoan').textContent = loan.toLocaleString('fr-FR') + ' $';
+      document.getElementById('valDTI').textContent = Math.round(dti * 100) + ' %';
+      document.getElementById('valCollateral').textContent = Math.round(collateral * 100) + ' %';
+      document.getElementById('valScore').textContent = score;
+
+      // Facteur macro
+      const macroFactors = { normal: 1.0, modere: 1.45, severe: 2.20 };
+      const mFactor = macroFactors[currentMacro];
+
+      // Formule logistique PD
+      const scoreNorm = (score - 300) / (850 - 300);
+      const logit = 1.8 + (3.2 * dti) - (5.5 * scoreNorm) + (0.35 * (mFactor - 1.0));
+      const pdBase = 1.0 / (1.0 + Math.exp(-logit));
+      const pdFinal = Math.min(Math.max(pdBase * mFactor, 0.002), 0.99);
+
+      // LGD
+      const colMitigation = Math.min(collateral * 0.35, 0.35);
+      const lgdFinal = Math.max(0.45 - colMitigation, 0.10);
+
+      // IFRS 9 Stage & ECL
+      let stage = "Stage 1 (Sain)";
+      let horizon = "Horizon : 12 mois";
+      let decision = "DOSSIER APPROUVÉ";
+      let badgeTheme = "emerald";
+      let ecl = pdFinal * lgdFinal * loan;
+
+      if (pdFinal >= 0.15) {
+        stage = "Stage 3 (Déprécié / Risque Avéré)";
+        horizon = "Horizon : Durée de vie (Lifetime)";
+        decision = "REFUS DU CRÉDIT (PROVISIONNEMENT INTÉGRAL)";
+        badgeTheme = "rose";
+        ecl = 0.75 * lgdFinal * loan;
+      } else if (pdFinal >= 0.03 || score < 680 || currentMacro === 'severe') {
+        stage = "Stage 2 (Dégradation Significative - SICR)";
+        horizon = "Horizon : Durée de vie (Lifetime)";
+        decision = "ACCORD SOUS CONDITIONS (SURVEILLANCE RENFORCÉE)";
+        badgeTheme = "amber";
+        const pdLifetime = Math.min(pdFinal * 3.2, 0.95);
+        ecl = pdLifetime * lgdFinal * loan;
+      }
+
+      // RWA & Capital
+      const kReq = 0.08 * (pdFinal * 0.5 + lgdFinal * 0.5);
+      const rwa = loan * kReq * 12.5;
+      const cet1 = rwa * 0.105;
+
+      // Update KPIs
+      document.getElementById('kpiPD').textContent = (pdFinal * 100).toFixed(2) + ' %';
+      document.getElementById('kpiLGD').textContent = (lgdFinal * 100).toFixed(2) + ' %';
+      document.getElementById('kpiRWA').textContent = Math.round(rwa).toLocaleString('fr-FR') + ' $';
+      document.getElementById('kpiCET1').textContent = Math.round(cet1).toLocaleString('fr-FR') + ' $';
+      document.getElementById('valEclHeader').textContent = Math.round(ecl).toLocaleString('fr-FR') + ' $';
+
+      // Update Decision Banner
+      const banner = document.getElementById('decisionBanner');
+      const icon = document.getElementById('decisionIcon');
+      const text = document.getElementById('decisionText');
+      const sub = document.getElementById('decisionSub');
+      const stageEl = document.getElementById('decisionStage');
+
+      text.textContent = decision;
+      sub.textContent = horizon;
+      stageEl.textContent = stage;
+
+      if (badgeTheme === 'emerald') {
+        banner.className = "p-5 rounded-2xl border transition-all duration-300 bg-emerald-950/40 border-emerald-800/80 flex items-center justify-between";
+        icon.className = "w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl";
+        icon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+        stageEl.className = "text-xs font-mono uppercase tracking-wider text-emerald-300";
+      } else if (badgeTheme === 'amber') {
+        banner.className = "p-5 rounded-2xl border transition-all duration-300 bg-amber-950/40 border-amber-800/80 flex items-center justify-between";
+        icon.className = "w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-2xl";
+        icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+        stageEl.className = "text-xs font-mono uppercase tracking-wider text-amber-300";
+      } else {
+        banner.className = "p-5 rounded-2xl border transition-all duration-300 bg-rose-950/40 border-rose-800/80 flex items-center justify-between";
+        icon.className = "w-12 h-12 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-2xl";
+        icon.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+        stageEl.className = "text-xs font-mono uppercase tracking-wider text-rose-300";
+      }
+
+      // Waterfall bars update
+      const dtiImpact = (dti * 3.2).toFixed(2);
+      const scoreImpact = (scoreNorm * 5.5).toFixed(2);
+      const macroImpact = (mFactor > 1 ? (mFactor - 1) * 2.5 : 0).toFixed(2);
+
+      document.getElementById('waterfallDTI').textContent = '+' + dtiImpact + ' %';
+      document.getElementById('waterfallScore').textContent = '-' + scoreImpact + ' %';
+      document.getElementById('waterfallMacro').textContent = '+' + macroImpact + ' %';
+      document.getElementById('waterfallFinalPD').textContent = (pdFinal * 100).toFixed(2) + ' %';
+
+      document.getElementById('barDTI').style.width = Math.min(dti * 100, 100) + '%';
+      document.getElementById('barScore').style.width = Math.min(scoreNorm * 100, 100) + '%';
+      document.getElementById('barMacro').style.width = (mFactor === 1 ? 0 : (mFactor === 1.45 ? 40 : 85)) + '%';
+    }
+
+    // CANVAS AML GRAPH ENGINE
+    function drawAmlGraph(isAlert = false) {
+      const canvas = document.getElementById('amlCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const pivot = { x: 300, y: 190, r: 18, name: "Cpt-7782" };
+      const sources = [
+        { x: 100, y: 80, r: 10, name: "Cpt-A ($9.4k)" },
+        { x: 100, y: 150, r: 10, name: "Cpt-B ($9.8k)" },
+        { x: 100, y: 230, r: 10, name: "Cpt-C ($9.2k)" },
+        { x: 100, y: 300, r: 10, name: "Cpt-D ($9.6k)" }
+      ];
+      const target = { x: 530, y: 190, r: 16, name: "Offshore ($38.1k)" };
+
+      // Draw Edges
+      sources.forEach(s => {
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(pivot.x, pivot.y);
+        ctx.strokeStyle = isAlert ? 'rgba(244, 63, 94, 0.7)' : 'rgba(6, 182, 212, 0.3)';
+        ctx.lineWidth = isAlert ? 2.5 : 1.5;
+        ctx.stroke();
+      });
+
+      ctx.beginPath();
+      ctx.moveTo(pivot.x, pivot.y);
+      ctx.lineTo(target.x, target.y);
+      ctx.strokeStyle = isAlert ? 'rgba(244, 63, 94, 0.9)' : 'rgba(100, 116, 139, 0.3)';
+      ctx.lineWidth = isAlert ? 4 : 2;
+      ctx.stroke();
+
+      // Draw Sources
+      sources.forEach(s => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = '#06b6d4';
+        ctx.fill();
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '10px "JetBrains Mono"';
+        ctx.fillText(s.name, s.x - 30, s.y - 14);
+      });
+
+      // Draw Pivot
+      ctx.beginPath();
+      ctx.arc(pivot.x, pivot.y, pivot.r, 0, Math.PI * 2);
+      ctx.fillStyle = isAlert ? '#f43f5e' : '#f59e0b';
+      ctx.fill();
+      if (isAlert) {
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 11px "JetBrains Mono"';
+      ctx.fillText(pivot.name, pivot.x - 26, pivot.y + 30);
+
+      // Draw Target
+      ctx.beginPath();
+      ctx.arc(target.x, target.y, target.r, 0, Math.PI * 2);
+      ctx.fillStyle = isAlert ? '#e11d48' : '#475569';
+      ctx.fill();
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = '10px "JetBrains Mono"';
+      ctx.fillText(target.name, target.x - 35, target.y + 28);
+    }
+
+    function triggerAmlAlert() {
+      drawAmlGraph(true);
+      document.getElementById('graphStatus').className = "text-xs font-mono text-rose-400 bg-rose-950/80 px-2 py-0.5 rounded border border-rose-800 animate-pulse";
+      document.getElementById('graphStatus').textContent = "⚠️ ALERTE SCHTROUMPFAGE DÉTECTÉE";
+
+      document.getElementById('dosEmptyState').classList.add('hidden');
+      document.getElementById('dosReportBox').classList.remove('hidden');
+    }
+
+    // Init
+    window.onload = function() {
+      updateRiskCalc();
+      drawAmlGraph(false);
+    };
+  </script>
+
+</body>
+</html>
