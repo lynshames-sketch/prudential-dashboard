@@ -54,7 +54,7 @@ prudential-dashboard/
 
 ### 1. Cloner le Répertoire
 ```bash
-git clone https://github.com/saubaber/prudential-dashboard.git
+git clone https://github.com/lynshames-sketch/prudential-dashboard.git
 cd prudential-dashboard
 ```
 
