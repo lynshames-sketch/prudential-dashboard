@@ -13,10 +13,10 @@
       theme: {
         extend: {
           colors: {
-            // PALETTE OFFICIELLE COOLORS : https://coolors.co/0a1128-1c2541-3a506b-5bc0be-f4f5f6
-            oxfordBlue: '#0a1128',     // Fond principal sombre institutionnel
-            spaceCadet: '#1c2541',     // Fond des cartes et panneaux
-            slateBlue: '#3a506b',      // Bordures et séparateurs neutres
+            // PALETTE SOMBRE BANCAIRE HAUTE SÉCURITÉ
+            oxfordBlue: '#040711',     // Fond principal noir saphir impérial
+            spaceCadet: '#121a2d',     // Fond des cartes et panneaux
+            slateBlue: '#2a3b5c',      // Bordures et séparateurs neutres
             iceCyan: '#5bc0be',        // Accent lumineux réglementaire / actif
             pureWhite: '#f4f5f6',      // Texte contrasté et titres
 
@@ -47,7 +47,7 @@
   <!-- KaTeX pour le rendu officiel des formules prudentielles LaTeX -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, { ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'canvas'] });"></script>
 
   <style>
     .glass-bank {
@@ -87,16 +87,6 @@
       </div>
 
       <div class="flex items-center gap-4">
-        <!-- Palette Badge Coolors -->
-        <a href="https://coolors.co/0a1128-1c2541-3a506b-5bc0be-f4f5f6" target="_blank" class="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full border border-slateBlue/50 bg-spaceCadet/60 text-[10px] font-mono text-pureWhite hover:border-iceCyan transition-colors">
-          <span class="w-2.5 h-2.5 rounded-full" style="background-color: #0a1128;"></span>
-          <span class="w-2.5 h-2.5 rounded-full" style="background-color: #1c2541;"></span>
-          <span class="w-2.5 h-2.5 rounded-full" style="background-color: #3a506b;"></span>
-          <span class="w-2.5 h-2.5 rounded-full" style="background-color: #5bc0be;"></span>
-          <span class="w-2.5 h-2.5 rounded-full" style="background-color: #f4f5f6;"></span>
-          <span class="ml-1 text-iceCyan font-semibold">Palette Bancaire</span>
-        </a>
-
         <div class="hidden sm:flex items-center gap-2 text-xs font-mono bg-spaceCadet px-3.5 py-1.5 rounded-full border border-slateBlue/50">
           <span class="w-2 h-2 rounded-full bg-safeEmerald animate-pulse"></span>
           <span class="text-slate-300">Moteur Économétrique Connecté</span>
@@ -467,19 +457,7 @@
 
     </div>
 
-    <!-- COOLORS PALETTE WIDGET OFFICIEL EMBEDDED -->
-    <div class="glass-bank rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 border border-slateBlue/40">
-      <div class="space-y-1 text-center sm:text-left">
-        <h4 class="font-heading font-bold text-white text-base">Charte Graphique & Palette Coolors Bancaire</h4>
-        <p class="text-xs text-slate-300 font-mono">Palette officielle : <a href="https://coolors.co/0a1128-1c2541-3a506b-5bc0be-f4f5f6" target="_blank" class="text-iceCyan underline hover:text-white">coolors.co/0a1128-1c2541-3a506b-5bc0be-f4f5f6</a></p>
-      </div>
 
-      <!-- Coolors Palette Widget -->
-      <div class="flex items-center">
-        <script src="https://coolors.co/palette-widget/widget.js"></script>
-        <script data-id="07030588748587463">new CoolorsPaletteWidget("07030588748587463", ["0a1128","1c2541","3a506b","5bc0be","f4f5f6"]); </script>
-      </div>
-    </div>
 
   </main>
 
