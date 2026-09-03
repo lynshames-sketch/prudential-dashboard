@@ -4,8 +4,16 @@
 > **Auteur :** Saubaber Longang Gamo (Ph.D. en Économie • Modélisation Économétrique)
 
 [![Standards](https://img.shields.io/badge/Regulatory%20Standards-IFRS%209%20%7C%20Basel%20III--IV%20IRB-06b6d4)](https://www.bis.org/bcbs/basel3.htm)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-10b981?logo=github)](https://lynshames-sketch.github.io/prudential-dashboard/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://www.python.org/)
+
+---
+
+## 🌐 Démonstration en Ligne
+
+L'application est directement accessible en ligne sans installation :  
+👉 **[https://lynshames-sketch.github.io/prudential-dashboard/](https://lynshames-sketch.github.io/prudential-dashboard/)**
 
 ---
 
