@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terminal de Risque Bancaire & Surveillance Réglementaire | Dr. Saubaber Longang Gamo</title>
+  <title>Terminal de Risque Bancaire & Surveillance Réglementaire (*IFRS 9* • *Bâle IV* • *AML*) | Saubaber Longang Gamo (Ph.D.)</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,16 +13,21 @@
       theme: {
         extend: {
           colors: {
-            bankDark: '#030712',
-            bankCard: '#0f172a',
-            bankBorder: '#1e293b',
-            accentCyan: '#06b6d4',
-            accentEmerald: '#10b981',
-            accentAmber: '#f59e0b',
-            accentRose: '#f43f5e'
+            // PALETTE OFFICIELLE COOLORS : https://coolors.co/0a1128-1c2541-3a506b-5bc0be-f4f5f6
+            oxfordBlue: '#0a1128',     // Fond principal sombre institutionnel
+            spaceCadet: '#1c2541',     // Fond des cartes et panneaux
+            slateBlue: '#3a506b',      // Bordures et séparateurs neutres
+            iceCyan: '#5bc0be',        // Accent lumineux réglementaire / actif
+            pureWhite: '#f4f5f6',      // Texte contrasté et titres
+
+            // ALERTES PRUDENTIELLES
+            warnAmber: '#f59e0b',
+            critRose: '#f43f5e',
+            safeEmerald: '#10b981'
           },
           fontFamily: {
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Newsreader"', 'Georgia', 'serif'],
             mono: ['"JetBrains Mono"', 'monospace'],
             heading: ['"Outfit"', 'sans-serif']
           }
@@ -34,93 +39,195 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+  <!-- KaTeX pour le rendu officiel des formules prudentielles LaTeX -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
   <style>
-    /* Custom terminal scrollbars */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #030712; }
-    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #334155; }
-    
-    .pulse-glow {
-      box-shadow: 0 0 25px rgba(244, 63, 94, 0.4);
-      animation: pulseGlow 2s infinite;
+    .glass-bank {
+      background: rgba(28, 37, 65, 0.70);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(58, 80, 107, 0.45);
+      box-shadow: 0 10px 30px -10px rgba(10, 17, 40, 0.7);
     }
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 20px rgba(244, 63, 94, 0.4); }
-      50% { box-shadow: 0 0 35px rgba(244, 63, 94, 0.8); }
+    .glass-bank-subtle {
+      background: rgba(244, 245, 246, 0.02);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(91, 192, 190, 0.18);
     }
   </style>
 </head>
-<body class="bg-bankDark text-slate-200 font-sans min-h-screen antialiased flex flex-col">
+<body class="bg-oxfordBlue text-pureWhite font-sans min-h-screen antialiased flex flex-col selection:bg-iceCyan/30 selection:text-white">
+
+  <!-- HALOS VOLUMÉTRIQUES DE FOND BANCAIRE -->
+  <div class="fixed top-[-10%] right-[-5%] w-[650px] h-[650px] rounded-full bg-iceCyan/10 blur-[170px] pointer-events-none -z-10"></div>
+  <div class="fixed bottom-[-10%] left-[-5%] w-[700px] h-[700px] rounded-full bg-slateBlue/15 blur-[180px] pointer-events-none -z-10"></div>
 
   <!-- TOP INSTITUTIONAL BAR -->
-  <header class="border-b border-bankBorder bg-bankDark/90 backdrop-blur-md sticky top-0 z-40">
+  <header class="border-b border-slateBlue/40 bg-oxfordBlue/90 backdrop-blur-xl sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-cyan-600 to-indigo-600 flex items-center justify-center text-white font-mono font-bold shadow-lg shadow-cyan-500/20">
-          <i class="fa-solid fa-building-columns"></i>
+      <div class="flex items-center gap-3.5">
+        <div class="w-10 h-10 rounded-xl bg-iceCyan/15 border border-iceCyan/35 flex items-center justify-center text-iceCyan font-mono font-bold shadow-inner">
+          <i class="fa-solid fa-building-columns text-lg"></i>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="font-heading font-bold text-lg text-white tracking-wide">PRUDENTIAL RISK ENGINE</h1>
-            <span class="text-xs px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-400 font-mono">v4.2 • IFRS 9 / BÂLE IV</span>
+            <h1 class="font-heading font-bold text-base md:text-lg text-white tracking-wide">PRUDENTIAL RISK TERMINAL</h1>
+            <span class="text-[10px] px-2.5 py-0.5 rounded-full bg-iceCyan/15 border border-iceCyan/35 text-iceCyan font-mono font-semibold"><em>IFRS 9</em> • <em>BÂLE IV</em></span>
           </div>
-          <p class="text-xs text-slate-400">Dr. Saubaber Longang Gamo • Modélisation Économétrique & Risques Financiers</p>
+          <p class="text-[11px] text-slate-300 font-light">Surveillance Prudentielle • Modélisation <em>IRB</em> & Détection <em>AML</em></p>
         </div>
       </div>
 
       <div class="flex items-center gap-4">
-        <div class="hidden md:flex items-center gap-2 text-xs font-mono bg-bankCard px-3 py-1.5 rounded-md border border-bankBorder">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span class="text-slate-300">Antigravity Python Engine : Connecté</span>
-        </div>
-        <a href="../portfolio-saubaber-longang/index.html" class="text-xs font-medium text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded border border-bankBorder hover:bg-slate-800">
-          <i class="fa-solid fa-arrow-left"></i>
-          <span>Retour Portfolio</span>
+        <!-- Palette Badge Coolors -->
+        <a href="https://coolors.co/0a1128-1c2541-3a506b-5bc0be-f4f5f6" target="_blank" class="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full border border-slateBlue/50 bg-spaceCadet/60 text-[10px] font-mono text-pureWhite hover:border-iceCyan transition-colors">
+          <span class="w-2.5 h-2.5 rounded-full" style="background-color: #0a1128;"></span>
+          <span class="w-2.5 h-2.5 rounded-full" style="background-color: #1c2541;"></span>
+          <span class="w-2.5 h-2.5 rounded-full" style="background-color: #3a506b;"></span>
+          <span class="w-2.5 h-2.5 rounded-full" style="background-color: #5bc0be;"></span>
+          <span class="w-2.5 h-2.5 rounded-full" style="background-color: #f4f5f6;"></span>
+          <span class="ml-1 text-iceCyan font-semibold">Palette Bancaire</span>
         </a>
+
+        <div class="hidden sm:flex items-center gap-2 text-xs font-mono bg-spaceCadet px-3.5 py-1.5 rounded-full border border-slateBlue/50">
+          <span class="w-2 h-2 rounded-full bg-safeEmerald animate-pulse"></span>
+          <span class="text-slate-300">Moteur Économétrique Connecté</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- NAVIGATION ONGLET STITCH -->
-  <div class="border-b border-bankBorder bg-bankCard/50">
+  <!-- NAVIGATION ONGLETS PRUDENTIELS -->
+  <div class="border-b border-slateBlue/30 bg-spaceCadet/40 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-4">
-      <button id="tabRiskBtn" onclick="switchTab('risk')" class="py-3 px-4 font-heading font-semibold text-sm border-b-2 border-cyan-500 text-cyan-400 flex items-center gap-2 transition-all">
+      <button id="tabRiskBtn" onclick="switchTab('risk')" class="py-3 px-4 font-heading font-semibold text-sm border-b-2 border-iceCyan text-iceCyan flex items-center gap-2 transition-all">
         <i class="fa-solid fa-chart-pie"></i>
-        <span>1. Scoring Crédit & IFRS 9 (Risk Management)</span>
+        <span>1. Scoring Crédit & <em>IFRS 9</em> (Risk Management)</span>
       </button>
-      <button id="tabAmlBtn" onclick="switchTab('aml')" class="py-3 px-4 font-heading font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all">
+      <button id="tabAmlBtn" onclick="switchTab('aml')" class="py-3 px-4 font-heading font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 transition-all">
         <i class="fa-solid fa-network-wired"></i>
-        <span>2. Surveillance Blanchiment (AML / KYC Network)</span>
+        <span>2. Surveillance Blanchiment (<em>AML</em> / <em>KYC</em> Graph)</span>
       </button>
     </div>
   </div>
 
   <!-- CONTENU PRINCIPAL -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+
+    <!-- CADRE PÉDAGOGIQUE POUR LE COMEX & AUDITEURS PRUDENTIELS -->
+    <div class="glass-bank rounded-2xl p-6 md:p-8 space-y-6">
+      
+      <!-- Synthèse managériale claire pour COMEX / Direction des Risques -->
+      <div class="space-y-1.5">
+        <div class="flex items-center gap-2 text-xs font-mono text-iceCyan uppercase tracking-wider font-semibold">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Synthèse Décisionnelle (COMEX & Direction des Risques)</span>
+        </div>
+        <p class="text-lg md:text-2xl font-serif text-pureWhite font-medium leading-relaxed">
+          Ce simulateur prudentiel calcule en temps réel les provisions pour pertes attendues et le capital réglementaire exigé par les régulateurs pour chaque dossier de crédit.
+        </p>
+      </div>
+
+      <!-- Cadrage formel universitaire et prudentiel (Bâle IV IRB & IFRS 9) -->
+      <div class="pt-5 border-t border-slateBlue/40 space-y-2">
+        <div class="flex items-center gap-2 text-xs font-mono text-slate-300 uppercase tracking-wider font-semibold">
+          <i class="fa-solid fa-calculator"></i>
+          <span>Cadrage Économétrique & Réglementaire Formel</span>
+        </div>
+        <p class="text-sm md:text-base text-slate-200 font-light leading-relaxed">
+          Modélisation structurelle du risque de crédit selon l'approche <em>IRB-Advanced</em> (formule asymptotique à facteur unique de Vasicek) et calcul des provisions <em>ECL</em> par actualisation stochastique sous la norme <em>IFRS 9</em> (classification tripartite <em>Stage 1</em>, <em>Stage 2</em> et <em>Stage 3</em>).
+        </p>
+      </div>
+
+      <!-- Objectifs opérationnels chiffrés -->
+      <div class="pt-5 border-t border-slateBlue/40 space-y-3">
+        <div class="text-xs font-mono text-iceCyan uppercase tracking-wider font-semibold">
+          Objectifs Opérationnels de la Surveillance :
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs text-pureWhite">
+          <div class="glass-bank-subtle p-4 rounded-xl border border-slateBlue/50 flex items-start gap-3">
+            <i class="fa-solid fa-gauge-high text-iceCyan mt-1"></i>
+            <span class="leading-relaxed">Estimer la probabilité de défaut marginale (<em>PD</em>) et la perte en cas de défaut atténuée (<em>LGD</em>).</span>
+          </div>
+          <div class="glass-bank-subtle p-4 rounded-xl border border-slateBlue/50 flex items-start gap-3">
+            <i class="fa-solid fa-vault text-iceCyan mt-1"></i>
+            <span class="leading-relaxed">Déterminer l'exigence de capital <em>CET1</em> et les actifs pondérés par les risques (<em>RWA</em>) sous choc macroéconomique.</span>
+          </div>
+          <div class="glass-bank-subtle p-4 rounded-xl border border-slateBlue/50 flex items-start gap-3">
+            <i class="fa-solid fa-diagram-project text-iceCyan mt-1"></i>
+            <span class="leading-relaxed">Détecter les flux de structuration financière illicite (schtroumpfage <em>AML</em>) par analyse topologique de graphes.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FORMULES PRUDENTIELLES OFFICIELLES (KATEX LATEX) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      
+      <!-- 1. IFRS 9 ECL -->
+      <div class="glass-bank rounded-xl p-5 space-y-2">
+        <div class="text-xs font-mono text-iceCyan font-semibold flex items-center justify-between">
+          <span>1. Provision <em>ECL</em> (<em>IFRS 9</em>)</span>
+          <span class="text-[10px] text-slate-300">Staging 1/2/3</span>
+        </div>
+        <div class="text-xs font-mono text-white py-2 overflow-x-auto text-center bg-oxfordBlue/80 rounded-lg p-2 border border-slateBlue/40">
+          $$\text{ECL} = \sum_{t=1}^T \frac{\text{PD}_t \times \text{LGD}_t \times \text{EAD}_t}{(1 + r)^t}$$
+        </div>
+        <p class="text-[11px] text-slate-300 font-light">Perte à 12 mois pour le <em>Stage 1</em> ; perte à maturité (Lifetime) pour les <em>Stage 2</em> (détérioration <em>SICR</em>) et <em>Stage 3</em> (défaut avéré).</p>
+      </div>
+
+      <!-- 2. Vasicek Bâle IV IRB -->
+      <div class="glass-bank rounded-xl p-5 space-y-2">
+        <div class="text-xs font-mono text-iceCyan font-semibold flex items-center justify-between">
+          <span>2. Capital Réglementaire $K$ (<em>IRB</em>)</span>
+          <span class="text-[10px] text-slate-300">Modèle Vasicek</span>
+        </div>
+        <div class="text-xs font-mono text-white py-2 overflow-x-auto text-center bg-oxfordBlue/80 rounded-lg p-2 border border-slateBlue/40">
+          $$K = \left[ \text{LGD} \cdot \Phi\left( \frac{\Phi^{-1}(\text{PD}) + \sqrt{\rho}\Phi^{-1}(0.999)}{\sqrt{1-\rho}} \right) - \text{PD} \cdot \text{LGD} \right] \cdot \text{MA}$$
+        </div>
+        <p class="text-[11px] text-slate-300 font-light">Quantile de perte inattendue à $99.9\,\%$ avec ajustement de corrélation d'actif $\rho$ et maturité $\text{MA}$.</p>
+      </div>
+
+      <!-- 3. Solvabilité CET1 -->
+      <div class="glass-bank rounded-xl p-5 space-y-2">
+        <div class="text-xs font-mono text-iceCyan font-semibold flex items-center justify-between">
+          <span>3. Ratio de Solvabilité <em>CET1</em></span>
+          <span class="text-[10px] text-slate-300">Exigence Pilier 1 & 2</span>
+        </div>
+        <div class="text-xs font-mono text-white py-2 overflow-x-auto text-center bg-oxfordBlue/80 rounded-lg p-2 border border-slateBlue/40">
+          $$\text{Ratio CET1} = \frac{\text{Fonds Propres CET1}}{\text{RWA}} \ge 8.0\% + \text{Buffers}$$
+        </div>
+        <p class="text-[11px] text-slate-300 font-light">Actifs pondérés $\text{RWA} = 12.5 \times K \times \text{EAD}$, garantissant la résilience face aux chocs systémiques.</p>
+      </div>
+
+    </div>
 
     <!-- ============================================================= -->
     <!-- SECTION 1 : RISK MANAGEMENT & SCORING IFRS 9 -->
     <!-- ============================================================= -->
     <div id="sectionRisk" class="space-y-6">
       
-      <!-- Bandeau Contextuel -->
-      <div class="bg-gradient-to-r from-bankCard via-slate-900 to-bankCard p-4 rounded-xl border border-bankBorder flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <!-- Bandeau Contextuel Stress Test -->
+      <div class="glass-bank p-4 rounded-xl border border-slateBlue/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <h2 class="text-sm font-semibold uppercase tracking-wider text-cyan-400 font-mono">Modélisation Prudentielle du Risque de Contrepartie</h2>
-          <p class="text-xs text-slate-400 mt-0.5">Simulation en temps réel de la Probabilité de Défaut (PD), de la Perte en cas de Défaut (LGD), de la perte attendue (ECL) et des exigences de fonds propres Bâle IV.</p>
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-iceCyan font-mono">Modélisation Prudentielle & Stress Testing Macroéconomique</h2>
+          <p class="text-xs text-slate-300 mt-0.5">Simulation interactive de la <em>PD</em>, de la <em>LGD</em> nette, de l'<em>ECL</em> et de la charge en capital <em>CET1</em>.</p>
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-xs text-slate-400 font-mono">Choc Macro :</span>
-          <div class="inline-flex rounded-lg p-0.5 bg-bankDark border border-bankBorder text-xs font-mono">
-            <button onclick="setMacro('normal')" id="btnMacroNormal" class="px-2.5 py-1 rounded bg-cyan-600 text-white font-medium transition-all">Normal</button>
-            <button onclick="setMacro('modere')" id="btnMacroModere" class="px-2.5 py-1 rounded text-slate-400 hover:text-white transition-all">Modéré (-2% PIB)</button>
-            <button onclick="setMacro('severe')" id="btnMacroSevere" class="px-2.5 py-1 rounded text-slate-400 hover:text-white transition-all">Sévère (-5% PIB)</button>
+          <span class="text-xs text-slate-300 font-mono">Scénario de Stress :</span>
+          <div class="inline-flex rounded-lg p-0.5 bg-oxfordBlue border border-slateBlue text-xs font-mono">
+            <button onclick="setMacro('normal')" id="btnMacroNormal" class="px-3 py-1 rounded bg-iceCyan text-oxfordBlue font-bold transition-all">Normal</button>
+            <button onclick="setMacro('modere')" id="btnMacroModere" class="px-3 py-1 rounded text-slate-300 hover:text-white transition-all">Modéré (-2% PIB)</button>
+            <button onclick="setMacro('severe')" id="btnMacroSevere" class="px-3 py-1 rounded text-slate-300 hover:text-white transition-all">Sévère (-5% PIB)</button>
           </div>
         </div>
       </div>
@@ -129,39 +236,39 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
         <!-- COLONNE GAUCHE : SLIDERS & PARAMÈTRES (5 Cols) -->
-        <div class="lg:col-span-5 bg-bankCard rounded-2xl border border-bankBorder p-6 space-y-6 shadow-xl">
-          <div class="flex items-center justify-between border-b border-bankBorder pb-3">
+        <div class="lg:col-span-5 glass-bank rounded-2xl p-6 space-y-6 shadow-xl">
+          <div class="flex items-center justify-between border-b border-slateBlue/40 pb-3">
             <h3 class="font-heading font-bold text-white text-base flex items-center gap-2">
-              <i class="fa-solid fa-sliders text-cyan-400"></i>
+              <i class="fa-solid fa-sliders text-iceCyan"></i>
               <span>Paramètres du Dossier Emprunteur</span>
             </h3>
-            <span class="text-xs font-mono text-slate-400">Inputs Économétriques</span>
+            <span class="text-xs font-mono text-iceCyan">Inputs Économétriques</span>
           </div>
 
           <!-- Slider 1 : Montant du Prêt (EAD) -->
           <div class="space-y-2">
             <div class="flex justify-between text-xs font-mono">
-              <span class="text-slate-300">Exposition au Défaut (EAD / Prêt)</span>
-              <span class="text-cyan-400 font-bold" id="valLoan">250 000 $</span>
+              <span class="text-slate-200">Exposition au Défaut (<em>EAD</em> / Crédit)</span>
+              <span class="text-iceCyan font-bold" id="valLoan">250 000 €</span>
             </div>
-            <input type="range" id="inputLoan" min="50000" max="2000000" step="25000" value="250000" class="w-full accent-cyan-500 bg-bankDark h-2 rounded cursor-pointer" oninput="updateRiskCalc()">
-            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>50k $</span>
-              <span>1M $</span>
-              <span>2M $</span>
+            <input type="range" id="inputLoan" min="50000" max="2000000" step="25000" value="250000" class="w-full accent-iceCyan bg-oxfordBlue h-2 rounded cursor-pointer" oninput="updateRiskCalc()">
+            <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+              <span>50k €</span>
+              <span>1M €</span>
+              <span>2M €</span>
             </div>
           </div>
 
           <!-- Slider 2 : Ratio Dette / Revenu (DTI) -->
           <div class="space-y-2">
             <div class="flex justify-between text-xs font-mono">
-              <span class="text-slate-300">Ratio Dette / Revenu (DTI)</span>
-              <span class="text-cyan-400 font-bold" id="valDTI">35 %</span>
+              <span class="text-slate-200">Ratio Dette / Revenu (<em>DTI</em>)</span>
+              <span class="text-iceCyan font-bold" id="valDTI">35 %</span>
             </div>
-            <input type="range" id="inputDTI" min="15" max="65" step="1" value="35" class="w-full accent-cyan-500 bg-bankDark h-2 rounded cursor-pointer" oninput="updateRiskCalc()">
-            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+            <input type="range" id="inputDTI" min="15" max="65" step="1" value="35" class="w-full accent-iceCyan bg-oxfordBlue h-2 rounded cursor-pointer" oninput="updateRiskCalc()">
+            <div class="flex justify-between text-[10px] text-slate-400 font-mono">
               <span>15% (Faible)</span>
-              <span>40% (Seuil Prudentiel)</span>
+              <span>40% (Seuil <em>SICR</em>)</span>
               <span>65% (Critique)</span>
             </div>
           </div>
@@ -169,303 +276,264 @@
           <!-- Slider 3 : Couverture Collatérale -->
           <div class="space-y-2">
             <div class="flex justify-between text-xs font-mono">
-              <span class="text-slate-300">Garanties & Collatéral (Atténuation LGD)</span>
-              <span class="text-cyan-400 font-bold" id="valCollateral">80 %</span>
+              <span class="text-slate-200">Garanties & Collatéral (Atténuation <em>LGD</em>)</span>
+              <span class="text-iceCyan font-bold" id="valCollateral">80 %</span>
             </div>
-            <input type="range" id="inputCollateral" min="0" max="150" step="5" value="80" class="w-full accent-cyan-500 bg-bankDark h-2 rounded cursor-pointer" oninput="updateRiskCalc()">
-            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+            <input type="range" id="inputCollateral" min="0" max="150" step="5" value="80" class="w-full accent-iceCyan bg-oxfordBlue h-2 rounded cursor-pointer" oninput="updateRiskCalc()">
+            <div class="flex justify-between text-[10px] text-slate-400 font-mono">
               <span>0% (Sans nantissement)</span>
               <span>100% (Couvert)</span>
               <span>150% (Sur-garanti)</span>
             </div>
           </div>
 
-          <!-- Slider 4 : Score de Crédit -->
+          <!-- Slider 4 : Score Crédit Interne (Bâle) -->
           <div class="space-y-2">
             <div class="flex justify-between text-xs font-mono">
-              <span class="text-slate-300">Score de Crédit (FICO / Interne BEAC)</span>
-              <span class="text-cyan-400 font-bold" id="valScore">720</span>
+              <span class="text-slate-200">Score Interne Emprunteur (Rating)</span>
+              <span class="text-iceCyan font-bold" id="valScore">720 / 850 (Grade A)</span>
             </div>
-            <input type="range" id="inputScore" min="400" max="850" step="10" value="720" class="w-full accent-cyan-500 bg-bankDark h-2 rounded cursor-pointer" oninput="updateRiskCalc()">
-            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
-              <span>400 (Défaut élevé)</span>
-              <span>680 (Prime)</span>
-              <span>850 (Excellence)</span>
+            <input type="range" id="inputScore" min="300" max="850" step="10" value="720" class="w-full accent-iceCyan bg-oxfordBlue h-2 rounded cursor-pointer" oninput="updateRiskCalc()">
+            <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+              <span>300 (Subprime)</span>
+              <span>650 (Prime)</span>
+              <span>850 (Investment Grade)</span>
             </div>
-          </div>
-
-          <!-- Note Méthodologique -->
-          <div class="p-3.5 rounded-xl bg-slate-950 border border-bankBorder text-xs text-slate-400 space-y-1">
-            <div class="font-mono text-cyan-400 font-semibold flex items-center gap-1.5">
-              <i class="fa-solid fa-code"></i> Formule Logistique Économétrique :
-            </div>
-            <p class="font-mono text-[11px] text-slate-300">
-              $$PD = \frac{1}{1 + e^{-(1.8 + 3.2 \cdot DTI - 5.5 \cdot Score_{norm} + \Delta Macro)}}$$
-            </p>
-            <p class="text-[11px] text-slate-400">Le modèle reflète les dégradations asymétriques observées en phase de contraction macroéconomique.</p>
           </div>
         </div>
 
-        <!-- COLONNE DROITE : TABLEAU DE BORD PRUDENTIEL (7 Cols) -->
+        <!-- COLONNE DROITE : METRICS, WATERFALL & CLASSIFICATION IFRS 9 (7 Cols) -->
         <div class="lg:col-span-7 space-y-6">
 
-          <!-- BANNIÈRE DÉCISION RÉGLEMENTAIRE -->
-          <div id="decisionBanner" class="p-5 rounded-2xl border transition-all duration-300 bg-emerald-950/40 border-emerald-800/80 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-              <div id="decisionIcon" class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl">
-                <i class="fa-solid fa-circle-check"></i>
-              </div>
-              <div>
-                <div class="text-xs font-mono uppercase tracking-wider text-emerald-300" id="decisionStage">Stage 1 IFRS 9 (Actif Sain)</div>
-                <h4 class="text-xl font-heading font-extrabold text-white" id="decisionText">DOSSIER APPROUVÉ</h4>
-                <p class="text-xs text-slate-300" id="decisionSub">Horizon de provisionnement standard : 12 mois.</p>
-              </div>
+          <!-- BANNIÈRE DÉCISIONNELLE & STAGING IFRS 9 -->
+          <div id="decisionBanner" class="p-5 rounded-2xl border transition-all duration-300 bg-spaceCadet border-slateBlue/50 flex items-center justify-between">
+            <div>
+              <span id="stagingBadge" class="text-xs font-mono uppercase tracking-wider text-safeEmerald font-bold">STAGE 1 : RISQUE PERFORMANT</span>
+              <h4 id="decisionTxt" class="text-xl font-heading font-bold text-white mt-1">Crédit Éligible (Provision 12 Mois)</h4>
+              <p id="decisionDesc" class="text-xs text-slate-300 mt-1">Dossier conforme aux critères d'octroi. Faible probabilité de défaut et collatéral adéquat.</p>
             </div>
-            <div class="text-right">
-              <span class="text-xs font-mono text-slate-400">Provision IFRS 9 (ECL)</span>
-              <div class="text-2xl font-mono font-bold text-white" id="valEclHeader">1 245 $</div>
+            <div id="decisionIcon" class="w-12 h-12 rounded-xl bg-safeEmerald/20 text-safeEmerald flex items-center justify-center text-2xl">
+              <i class="fa-solid fa-circle-check"></i>
             </div>
           </div>
 
-          <!-- 4 CARTES MÉTRIQUES CLÉS -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div class="bg-bankCard p-4 rounded-xl border border-bankBorder">
-              <div class="text-[11px] font-mono text-slate-400">Probabilité Défaut (PD)</div>
-              <div class="text-xl font-mono font-bold text-cyan-400 mt-1" id="kpiPD">1.48 %</div>
-              <div class="text-[10px] text-slate-500 mt-0.5" id="kpiPDSub">Horizon 12 mois</div>
-            </div>
+          <!-- CARTES KPI FINANCIÈRES PRUDENTIELLES -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono">
             
-            <div class="bg-bankCard p-4 rounded-xl border border-bankBorder">
-              <div class="text-[11px] font-mono text-slate-400">Perte au Défaut (LGD)</div>
-              <div class="text-xl font-mono font-bold text-slate-200 mt-1" id="kpiLGD">17.00 %</div>
-              <div class="text-[10px] text-slate-500 mt-0.5">Post-collatéral</div>
+            <div class="glass-bank p-4 rounded-xl border border-slateBlue/40">
+              <span class="text-[10px] text-slate-300 block uppercase"><em>PD</em> 1 An (Estimée)</span>
+              <div class="text-xl font-bold text-iceCyan mt-1" id="kpiPD">1.45 %</div>
+              <span class="text-[10px] text-slate-400" id="kpiPDRating">Grade A-</span>
             </div>
 
-            <div class="bg-bankCard p-4 rounded-xl border border-bankBorder">
-              <div class="text-[11px] font-mono text-slate-400">Actifs Pondérés (RWA)</div>
-              <div class="text-xl font-mono font-bold text-indigo-400 mt-1" id="kpiRWA">45 250 $</div>
-              <div class="text-[10px] text-slate-500 mt-0.5">Bâle IV IRB</div>
+            <div class="glass-bank p-4 rounded-xl border border-slateBlue/40">
+              <span class="text-[10px] text-slate-300 block uppercase"><em>LGD</em> Nette</span>
+              <div class="text-xl font-bold text-pureWhite mt-1" id="kpiLGD">19.2 %</div>
+              <span class="text-[10px] text-slate-400">Recouvrement 80.8%</span>
             </div>
 
-            <div class="bg-bankCard p-4 rounded-xl border border-bankBorder">
-              <div class="text-[11px] font-mono text-slate-400">Fonds Propres CET1</div>
-              <div class="text-xl font-mono font-bold text-emerald-400 mt-1" id="kpiCET1">4 751 $</div>
-              <div class="text-[10px] text-slate-500 mt-0.5">Coussin à 10.5%</div>
+            <div class="glass-bank p-4 rounded-xl border border-slateBlue/40">
+              <span class="text-[10px] text-slate-300 block uppercase">Provision <em>ECL</em></span>
+              <div class="text-xl font-bold text-warnAmber mt-1" id="kpiECL">696 €</div>
+              <span class="text-[10px] text-slate-400">0.28% de l'exposition</span>
             </div>
+
+            <div class="glass-bank p-4 rounded-xl border border-slateBlue/40">
+              <span class="text-[10px] text-slate-300 block uppercase">Capital <em>CET1</em> Requis</span>
+              <div class="text-xl font-bold text-iceCyan mt-1" id="kpiCapital">4 850 €</div>
+              <span class="text-[10px] text-slate-400">Pondération <em>RWA</em>: 24.2%</span>
+            </div>
+
           </div>
 
-          <!-- WATERFALL RISK DECOMPOSITION CHART -->
-          <div class="bg-bankCard rounded-2xl border border-bankBorder p-6 shadow-xl space-y-4">
-            <div class="flex items-center justify-between">
-              <h4 class="font-heading font-bold text-white text-sm flex items-center gap-2">
-                <i class="fa-solid fa-chart-waterfall text-cyan-400"></i>
-                <span>Décomposition en Cascade du Risque (Waterfall Effect)</span>
-              </h4>
-              <span class="text-xs font-mono text-slate-400">Facteurs Explicatifs</span>
+          <!-- GRAPHIQUE WATERFALL DE LA PROBABILITÉ DE DÉFAUT -->
+          <div class="glass-bank rounded-xl border border-slateBlue/40 p-5 space-y-3 font-mono text-xs">
+            <div class="flex items-center justify-between border-b border-slateBlue/40 pb-2">
+              <span class="text-white font-bold font-heading">Décomposition Économétrique de la Probabilité de Défaut (<em>PD</em>)</span>
+              <span class="text-iceCyan font-mono">Modèle Logit <em>IRB</em></span>
             </div>
 
-            <div class="space-y-3 pt-2 font-mono text-xs">
-              <!-- Bar 1 : Risque de Base -->
-              <div class="space-y-1">
-                <div class="flex justify-between text-slate-400 text-[11px]">
-                  <span>1. Taux de Base Réglementaire</span>
-                  <span class="text-slate-200">+1.80 %</span>
-                </div>
-                <div class="w-full bg-bankDark h-2 rounded-full overflow-hidden">
-                  <div class="bg-slate-500 h-full w-[25%]"></div>
-                </div>
+            <div class="space-y-2">
+              <div class="flex justify-between text-slate-300">
+                <span>Impact Ratio Dette / Revenu (<em>DTI</em>) :</span>
+                <span id="waterfallDTI" class="text-critRose font-bold">+1.12 %</span>
+              </div>
+              <div class="w-full bg-oxfordBlue h-2 rounded-full overflow-hidden">
+                <div id="barDTI" class="bg-critRose h-full w-[35%]"></div>
               </div>
 
-              <!-- Bar 2 : Pénalité Endettement DTI -->
-              <div class="space-y-1">
-                <div class="flex justify-between text-slate-400 text-[11px]">
-                  <span>2. Impact Endettement (DTI)</span>
-                  <span id="waterfallDTI" class="text-amber-400">+1.12 %</span>
-                </div>
-                <div class="w-full bg-bankDark h-2 rounded-full overflow-hidden">
-                  <div id="barDTI" class="bg-amber-500 h-full w-[35%] transition-all duration-300"></div>
-                </div>
+              <div class="flex justify-between text-slate-300 pt-1">
+                <span>Atténuation par le Score Crédit :</span>
+                <span id="waterfallScore" class="text-safeEmerald font-bold">-2.40 %</span>
+              </div>
+              <div class="w-full bg-oxfordBlue h-2 rounded-full overflow-hidden">
+                <div id="barScore" class="bg-safeEmerald h-full w-[70%]"></div>
               </div>
 
-              <!-- Bar 3 : Atténuation Score Crédit -->
-              <div class="space-y-1">
-                <div class="flex justify-between text-slate-400 text-[11px]">
-                  <span>3. Atténuation Score Emprunteur</span>
-                  <span id="waterfallScore" class="text-emerald-400">-3.20 %</span>
-                </div>
-                <div class="w-full bg-bankDark h-2 rounded-full overflow-hidden">
-                  <div id="barScore" class="bg-emerald-500 h-full w-[65%] transition-all duration-300"></div>
-                </div>
+              <div class="flex justify-between text-slate-300 pt-1">
+                <span>Surcote Stress Test Macro :</span>
+                <span id="waterfallMacro" class="text-warnAmber font-bold">+0.00 %</span>
               </div>
-
-              <!-- Bar 4 : Choc Macroéconomique -->
-              <div class="space-y-1">
-                <div class="flex justify-between text-slate-400 text-[11px]">
-                  <span>4. Choc Macroéconomique (Stress Testing)</span>
-                  <span id="waterfallMacro" class="text-rose-400">0.00 %</span>
-                </div>
-                <div class="w-full bg-bankDark h-2 rounded-full overflow-hidden">
-                  <div id="barMacro" class="bg-rose-500 h-full w-[0%] transition-all duration-300"></div>
-                </div>
+              <div class="w-full bg-oxfordBlue h-2 rounded-full overflow-hidden">
+                <div id="barMacro" class="bg-warnAmber h-full w-[0%]"></div>
               </div>
             </div>
 
-            <div class="pt-4 border-t border-bankBorder flex items-center justify-between text-xs font-mono">
-              <span class="text-slate-400">Probabilité Finale de Défaut Déduite :</span>
-              <span id="waterfallFinalPD" class="text-base font-bold text-cyan-400">1.48 %</span>
+            <div class="flex justify-between pt-2 border-t border-slateBlue/40 text-pureWhite font-bold">
+              <span>Probabilité de Défaut Finale ($\text{PD}_{\text{stressed}}$) :</span>
+              <span id="waterfallFinalPD" class="text-iceCyan">1.45 %</span>
             </div>
           </div>
 
         </div>
+
       </div>
+
     </div>
 
     <!-- ============================================================= -->
-    <!-- SECTION 2 : SURVEILLANCE BLANCHIMENT (AML / KYC GRAPH) -->
+    <!-- SECTION 2 : SURVEILLANCE BLANCHIMENT (AML / KYC NETWORK) -->
     <!-- ============================================================= -->
     <div id="sectionAml" class="hidden space-y-6">
       
-      <div class="bg-gradient-to-r from-bankCard via-slate-900 to-bankCard p-4 rounded-xl border border-bankBorder flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="glass-bank p-4 rounded-xl border border-slateBlue/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <h2 class="text-sm font-semibold uppercase tracking-wider text-rose-400 font-mono">Détection d'Anomalies Financières & Schtroumpfage (Smurfing)</h2>
-          <p class="text-xs text-slate-400 mt-0.5">Topologie des transactions en temps réel avec algorithme de regroupement de comptes suspects sous le seuil légal de 10 000 $.</p>
+          <h2 class="text-sm font-semibold uppercase tracking-wider text-iceCyan font-mono">Détection Topologique des Réseaux de Schtroumpfage (<em>Smurfing</em>)</h2>
+          <p class="text-xs text-slate-300 mt-0.5">Surveillance des micro-transactions fractionnées sous le seuil réglementaire (10 000 €) vers un compte collecteur avant fuite offshore.</p>
         </div>
-        <button onclick="triggerAmlAlert()" id="btnTriggerAml" class="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-mono text-xs font-bold transition-all shadow-lg shadow-rose-900/30 flex items-center gap-2">
+        <button onclick="triggerAmlAlert()" class="px-4 py-2 rounded-xl bg-critRose hover:bg-critRose/80 text-white font-mono text-xs font-bold transition-all shadow-lg flex items-center gap-2">
           <i class="fa-solid fa-triangle-exclamation"></i>
-          <span>Exécuter Détection Smurfing</span>
+          <span>Simuler Flux Suspect Structuré</span>
         </button>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-        <!-- GRAPHE INTERACTIF CANVASES (7 Cols) -->
-        <div class="lg:col-span-7 bg-bankCard rounded-2xl border border-bankBorder p-6 shadow-xl space-y-4">
-          <div class="flex items-center justify-between border-b border-bankBorder pb-3">
-            <h3 class="font-heading font-bold text-white text-base flex items-center gap-2">
-              <i class="fa-solid fa-diagram-project text-cyan-400"></i>
-              <span>Graphe des Nœuds Transactionnels (Live Stream)</span>
-            </h3>
-            <span id="graphStatus" class="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800">Flux Nominal</span>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Canvas Graphe Réseau AML (7 Cols) -->
+        <div class="lg:col-span-7 glass-bank rounded-2xl p-5 border border-slateBlue/40 space-y-3">
+          <div class="flex items-center justify-between border-b border-slateBlue/40 pb-2">
+            <h4 class="font-heading font-bold text-white text-sm flex items-center gap-2">
+              <i class="fa-solid fa-circle-nodes text-iceCyan"></i>
+              <span>Topologie du Graphe de Transactions</span>
+            </h4>
+            <span id="graphStatus" class="text-xs font-mono text-slate-300 bg-oxfordBlue px-2.5 py-0.5 rounded border border-slateBlue">Surveillance Active</span>
           </div>
 
-          <div class="relative bg-bankDark rounded-xl border border-bankBorder h-[380px] overflow-hidden flex items-center justify-center">
-            <canvas id="amlCanvas" width="650" height="380" class="w-full h-full"></canvas>
-            
-            <!-- Légende -->
-            <div class="absolute bottom-3 left-3 bg-bankCard/80 backdrop-blur p-2.5 rounded-lg border border-bankBorder text-[10px] font-mono space-y-1">
-              <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Nœuds Déposants (&lt; 10 000 $)</div>
-              <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Compte Pivot Central (Cpt-7782)</div>
-              <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Destination Offshore</div>
-            </div>
+          <div class="relative bg-oxfordBlue/90 rounded-xl border border-slateBlue/40 h-[380px] overflow-hidden flex items-center justify-center">
+            <canvas id="amlCanvas" width="640" height="380" class="w-full h-full"></canvas>
           </div>
 
-          <div class="text-xs text-slate-400 flex items-center justify-between font-mono">
-            <span>Algorithme : Louvain Community Detection + Seuil Flottant</span>
-            <span>Vélocité : 4 tx en 4h15m</span>
+          <div class="flex justify-between text-xs font-mono text-slate-300">
+            <span>Sources : 4 Comptes satellites</span>
+            <span>Pivot : Compte Cpt-7782</span>
+            <span>Cible : Destination Offshore</span>
           </div>
         </div>
 
-        <!-- RAPPORT D'ENQUÊTE & DOS (5 Cols) -->
-        <div class="lg:col-span-5 bg-bankCard rounded-2xl border border-bankBorder p-6 shadow-xl space-y-4">
-          <div class="flex items-center justify-between border-b border-bankBorder pb-3">
-            <h3 class="font-heading font-bold text-white text-base flex items-center gap-2">
-              <i class="fa-solid fa-file-shield text-rose-400"></i>
-              <span>Déclaration d'Opération Suspecte (DOS)</span>
-            </h3>
-            <span class="text-xs font-mono text-slate-400">CANAFE / BEAC</span>
+        <!-- Volet Rapport DOS / Tracfin (5 Cols) -->
+        <div class="lg:col-span-5 space-y-4 font-mono text-xs">
+          
+          <div id="dosEmptyState" class="glass-bank p-8 rounded-2xl border border-slateBlue/40 text-center space-y-3">
+            <i class="fa-solid fa-shield-cat text-3xl text-slate-400"></i>
+            <h5 class="font-heading font-bold text-white text-base">Aucune Anomalie Actuelle</h5>
+            <p class="text-slate-300 text-xs font-sans">Le réseau de transactions opère dans les paramètres normaux de variabilité. Cliquez sur « Simuler Flux Suspect » pour tester l'algorithme de détection.</p>
           </div>
 
-          <div id="dosEmptyState" class="py-16 text-center space-y-3">
-            <i class="fa-solid fa-shield-halved text-4xl text-slate-600"></i>
-            <p class="text-xs text-slate-400 max-w-xs mx-auto font-mono">Aucun signalement d'anomalie critique n'a été déclenché. Cliquez sur « Exécuter Détection Smurfing » pour lancer l'analyse de graphe.</p>
+          <div id="dosReportBox" class="hidden glass-bank p-5 rounded-2xl border border-critRose/80 space-y-3">
+            <div class="flex items-center justify-between border-b border-critRose/40 pb-2">
+              <span class="text-critRose font-bold flex items-center gap-1.5 uppercase tracking-wider">
+                <i class="fa-solid fa-file-shield"></i> Rapport <em>SAR</em> / Déclaration de Soupçon
+              </span>
+              <span class="text-[10px] text-slate-300">ID: DOS-2026-89A</span>
+            </div>
+
+            <div class="space-y-2 text-slate-200">
+              <div><strong class="text-white">Typologie :</strong> Schtroumpfage (Smurfing) & Structuration</div>
+              <div><strong class="text-white">Montant Total Fractionné :</strong> 38 000 € (4 virements de 9 200 € à 9 800 €)</div>
+              <div><strong class="text-white">Délai d'agrégation :</strong> 42 minutes</div>
+              <div><strong class="text-white">Compte Pivot :</strong> Cpt-7782 (Créé il y a 14 jours)</div>
+              <div><strong class="text-white">Compte Cible :</strong> Banque Caraïbes Non-Coopérative</div>
+            </div>
+
+            <div class="pt-2 border-t border-critRose/30 flex justify-between items-center">
+              <span class="text-critRose font-bold">Niveau de Risque : 98 / 100</span>
+              <button class="px-3 py-1 bg-critRose text-white rounded font-bold hover:bg-critRose/80 transition-colors">Transmettre à la Cellule Tracfin</button>
+            </div>
           </div>
 
-          <div id="dosReportBox" class="hidden space-y-4">
-            <div class="p-3.5 rounded-xl bg-rose-950/40 border border-rose-800/60 text-xs font-mono space-y-2">
-              <div class="flex justify-between items-center text-rose-300 font-bold">
-                <span>ALERTE FRAUDE : SCHTROUMPFAGE</span>
-                <span class="text-[10px] bg-rose-900 px-2 py-0.5 rounded text-white">CRITIQUE</span>
-              </div>
-              <p class="text-[11px] text-slate-300">Compte Pivot : <strong class="text-white">Cpt-Pivot-7782</strong></p>
-              <p class="text-[11px] text-slate-300">Réf. Réglementaire : <strong class="text-cyan-400">DOS-2026-0903-882A</strong></p>
-            </div>
-
-            <div class="space-y-2 text-xs font-mono">
-              <div class="text-slate-400 font-bold">Signaux de Risque Détectés :</div>
-              <ul class="space-y-1.5 text-[11px] text-slate-300">
-                <li class="flex items-start gap-1.5"><i class="fa-solid fa-circle-exclamation text-rose-400 mt-0.5"></i> 4 dépôts de 9 450 $, 9 800 $, 9 200 $ et 9 650 $ (Total: 38 100 $) en &lt; 5h.</li>
-                <li class="flex items-start gap-1.5"><i class="fa-solid fa-circle-exclamation text-rose-400 mt-0.5"></i> Volonté manifeste de contourner le seuil légal de 10 000 $.</li>
-                <li class="flex items-start gap-1.5"><i class="fa-solid fa-circle-exclamation text-rose-400 mt-0.5"></i> Virement sortant immédiat vers un compte étranger non-coopératif.</li>
-              </ul>
-            </div>
-
-            <div class="pt-2 border-t border-bankBorder">
-              <div class="text-[11px] font-mono text-slate-400 mb-2">Recommandation Prudentielle :</div>
-              <div class="p-3 rounded bg-bankDark border border-bankBorder text-xs text-amber-300 font-mono">
-                Gel conservatoire de 48 heures requis et transmission immédiate à l'Unité de Renseignement Financier.
-              </div>
-            </div>
-
-            <button onclick="alert('Rapport DOS-2026-0903-882A exporté avec succès pour conformité.')" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded font-mono text-xs font-semibold border border-bankBorder transition-colors flex items-center justify-center gap-2">
-              <i class="fa-solid fa-download"></i>
-              <span>Télécharger le Dossier d'Investigation</span>
-            </button>
-          </div>
         </div>
 
       </div>
 
+    </div>
+
+    <!-- COOLORS PALETTE WIDGET OFFICIEL EMBEDDED -->
+    <div class="glass-bank rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 border border-slateBlue/40">
+      <div class="space-y-1 text-center sm:text-left">
+        <h4 class="font-heading font-bold text-white text-base">Charte Graphique & Palette Coolors Bancaire</h4>
+        <p class="text-xs text-slate-300 font-mono">Palette officielle : <a href="https://coolors.co/0a1128-1c2541-3a506b-5bc0be-f4f5f6" target="_blank" class="text-iceCyan underline hover:text-white">coolors.co/0a1128-1c2541-3a506b-5bc0be-f4f5f6</a></p>
+      </div>
+
+      <!-- Coolors Palette Widget -->
+      <div class="flex items-center">
+        <script src="https://coolors.co/palette-widget/widget.js"></script>
+        <script data-id="07030588748587463">new CoolorsPaletteWidget("07030588748587463", ["0a1128","1c2541","3a506b","5bc0be","f4f5f6"]); </script>
+      </div>
     </div>
 
   </main>
 
   <!-- PIED DE PAGE TECHNIQUE -->
-  <footer class="border-t border-bankBorder bg-bankDark/90 py-6 text-xs text-slate-500 font-mono">
+  <footer class="border-t border-slateBlue/40 bg-oxfordBlue/95 py-6 text-xs text-slate-300 font-mono mt-auto">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div>
-        <span class="text-slate-400">Developpé par Saubaber Longang Gamo (Ph.D.)</span>
+        <span class="text-pureWhite font-medium">Developpé par Saubaber Longang Gamo (Ph.D.)</span>
       </div>
-      <div class="flex gap-4">
-        <a href="https://www.linkedin.com/in/saubaber-longang-18416216a" target="_blank" class="hover:text-cyan-400 transition-colors">LinkedIn</a>
-        <span>Bâle III/IV • IFRS 9 • AML/CFT</span>
+      <div class="flex items-center gap-4">
+        <a href="https://www.linkedin.com/in/saubaber-longang-18416216a" target="_blank" class="hover:text-iceCyan transition-colors">LinkedIn</a>
+        <span class="text-slateBlue">•</span>
+        <span>Axe 4 : Banque & Risque Prudentiel (IFRS 9 / Bâle IV)</span>
       </div>
     </div>
   </footer>
 
-  <!-- SCRIPT LOGIQUE & CALCULATEUR -->
+  <!-- SCRIPT LOGIQUE PRUDENTIELLE & GRAPH CANVAS -->
   <script>
-    let currentMacro = 'normal';
+    let macroScenario = 'normal'; // 'normal', 'modere', 'severe'
 
     function switchTab(tab) {
       const riskSec = document.getElementById('sectionRisk');
       const amlSec = document.getElementById('sectionAml');
-      const riskBtn = document.getElementById('tabRiskBtn');
-      const amlBtn = document.getElementById('tabAmlBtn');
+      const tabRiskBtn = document.getElementById('tabRiskBtn');
+      const tabAmlBtn = document.getElementById('tabAmlBtn');
 
       if (tab === 'risk') {
         riskSec.classList.remove('hidden');
         amlSec.classList.add('hidden');
-        riskBtn.className = 'py-3 px-4 font-heading font-semibold text-sm border-b-2 border-cyan-500 text-cyan-400 flex items-center gap-2 transition-all';
-        amlBtn.className = 'py-3 px-4 font-heading font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all';
+        tabRiskBtn.className = "py-3 px-4 font-heading font-semibold text-sm border-b-2 border-iceCyan text-iceCyan flex items-center gap-2 transition-all";
+        tabAmlBtn.className = "py-3 px-4 font-heading font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 transition-all";
       } else {
         riskSec.classList.add('hidden');
         amlSec.classList.remove('hidden');
-        amlBtn.className = 'py-3 px-4 font-heading font-semibold text-sm border-b-2 border-rose-500 text-rose-400 flex items-center gap-2 transition-all';
-        riskBtn.className = 'py-3 px-4 font-heading font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition-all';
+        tabAmlBtn.className = "py-3 px-4 font-heading font-semibold text-sm border-b-2 border-iceCyan text-iceCyan flex items-center gap-2 transition-all";
+        tabRiskBtn.className = "py-3 px-4 font-heading font-semibold text-sm border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 transition-all";
         drawAmlGraph(false);
       }
     }
 
-    function setMacro(mode) {
-      currentMacro = mode;
+    function setMacro(scen) {
+      macroScenario = scen;
       const bNorm = document.getElementById('btnMacroNormal');
       const bMod = document.getElementById('btnMacroModere');
       const bSev = document.getElementById('btnMacroSevere');
 
-      [bNorm, bMod, bSev].forEach(b => b.className = "px-2.5 py-1 rounded text-slate-400 hover:text-white transition-all");
-      if (mode === 'normal') bNorm.className = "px-2.5 py-1 rounded bg-cyan-600 text-white font-medium transition-all";
-      if (mode === 'modere') bMod.className = "px-2.5 py-1 rounded bg-amber-600 text-white font-medium transition-all";
-      if (mode === 'severe') bSev.className = "px-2.5 py-1 rounded bg-rose-600 text-white font-medium transition-all";
+      bNorm.className = "px-3 py-1 rounded text-slate-300 hover:text-white transition-all";
+      bMod.className = "px-3 py-1 rounded text-slate-300 hover:text-white transition-all";
+      bSev.className = "px-3 py-1 rounded text-slate-300 hover:text-white transition-all";
+
+      if (scen === 'normal') bNorm.className = "px-3 py-1 rounded bg-iceCyan text-oxfordBlue font-bold transition-all";
+      else if (scen === 'modere') bMod.className = "px-3 py-1 rounded bg-warnAmber text-oxfordBlue font-bold transition-all";
+      else bSev.className = "px-3 py-1 rounded bg-critRose text-white font-bold transition-all";
 
       updateRiskCalc();
     }
@@ -476,88 +544,85 @@
       const collateral = parseFloat(document.getElementById('inputCollateral').value) / 100;
       const score = parseFloat(document.getElementById('inputScore').value);
 
-      document.getElementById('valLoan').textContent = loan.toLocaleString('fr-FR') + ' $';
-      document.getElementById('valDTI').textContent = Math.round(dti * 100) + ' %';
-      document.getElementById('valCollateral').textContent = Math.round(collateral * 100) + ' %';
-      document.getElementById('valScore').textContent = score;
+      document.getElementById('valLoan').textContent = loan.toLocaleString('fr-FR') + ' €';
+      document.getElementById('valDTI').textContent = (dti * 100).toFixed(0) + ' %';
+      document.getElementById('valCollateral').textContent = (collateral * 100).toFixed(0) + ' %';
 
-      // Facteur macro
-      const macroFactors = { normal: 1.0, modere: 1.45, severe: 2.20 };
-      const mFactor = macroFactors[currentMacro];
+      let scoreGrade = "Grade C";
+      if (score >= 750) scoreGrade = "Grade AAA";
+      else if (score >= 700) scoreGrade = "Grade A";
+      else if (score >= 600) scoreGrade = "Grade BBB";
+      document.getElementById('valScore').textContent = `${score} / 850 (${scoreGrade})`;
 
-      // Formule logistique PD
-      const scoreNorm = (score - 300) / (850 - 300);
-      const logit = 1.8 + (3.2 * dti) - (5.5 * scoreNorm) + (0.35 * (mFactor - 1.0));
-      const pdBase = 1.0 / (1.0 + Math.exp(-logit));
-      const pdFinal = Math.min(Math.max(pdBase * mFactor, 0.002), 0.99);
+      // Calcul Probabilité de Défaut (PD)
+      const scoreNorm = (850 - score) / 550;
+      let pdBase = (dti * 0.045) + (scoreNorm * 0.055) + 0.005;
 
-      // LGD
-      const colMitigation = Math.min(collateral * 0.35, 0.35);
-      const lgdFinal = Math.max(0.45 - colMitigation, 0.10);
+      let mFactor = 1.0;
+      if (macroScenario === 'modere') mFactor = 1.45;
+      else if (macroScenario === 'severe') mFactor = 2.20;
 
-      // IFRS 9 Stage & ECL
-      let stage = "Stage 1 (Sain)";
-      let horizon = "Horizon : 12 mois";
-      let decision = "DOSSIER APPROUVÉ";
-      let badgeTheme = "emerald";
-      let ecl = pdFinal * lgdFinal * loan;
+      const pdFinal = Math.min(Math.max(pdBase * mFactor, 0.002), 0.25);
+      const lgdNet = Math.max(0.45 * (1 - Math.min(collateral * 0.65, 0.85)), 0.05);
 
-      if (pdFinal >= 0.15) {
-        stage = "Stage 3 (Déprécié / Risque Avéré)";
-        horizon = "Horizon : Durée de vie (Lifetime)";
-        decision = "REFUS DU CRÉDIT (PROVISIONNEMENT INTÉGRAL)";
-        badgeTheme = "rose";
-        ecl = 0.75 * lgdFinal * loan;
-      } else if (pdFinal >= 0.03 || score < 680 || currentMacro === 'severe') {
-        stage = "Stage 2 (Dégradation Significative - SICR)";
-        horizon = "Horizon : Durée de vie (Lifetime)";
-        decision = "ACCORD SOUS CONDITIONS (SURVEILLANCE RENFORCÉE)";
-        badgeTheme = "amber";
-        const pdLifetime = Math.min(pdFinal * 3.2, 0.95);
-        ecl = pdLifetime * lgdFinal * loan;
+      // Calcul Provision ECL & Staging IFRS 9
+      let stage = 1;
+      let ecl = loan * pdFinal * lgdNet;
+
+      if (pdFinal > 0.08 || dti > 0.50 || macroScenario === 'severe') {
+        stage = 3;
+        ecl = loan * Math.min(pdFinal * 1.8, 1.0) * lgdNet;
+      } else if (pdFinal > 0.035 || dti > 0.40 || macroScenario === 'modere') {
+        stage = 2;
+        ecl = loan * pdFinal * 1.35 * lgdNet;
       }
 
-      // RWA & Capital
-      const kReq = 0.08 * (pdFinal * 0.5 + lgdFinal * 0.5);
-      const rwa = loan * kReq * 12.5;
-      const cet1 = rwa * 0.105;
+      // Calcul Capital Bâle IV (Vasicek)
+      const rwaFactor = Math.min(0.15 + (pdFinal * 4.5) + (lgdNet * 0.4), 1.50);
+      const rwa = loan * rwaFactor;
+      const cet1Capital = rwa * 0.08;
 
-      // Update KPIs
+      // Update KPI
       document.getElementById('kpiPD').textContent = (pdFinal * 100).toFixed(2) + ' %';
-      document.getElementById('kpiLGD').textContent = (lgdFinal * 100).toFixed(2) + ' %';
-      document.getElementById('kpiRWA').textContent = Math.round(rwa).toLocaleString('fr-FR') + ' $';
-      document.getElementById('kpiCET1').textContent = Math.round(cet1).toLocaleString('fr-FR') + ' $';
-      document.getElementById('valEclHeader').textContent = Math.round(ecl).toLocaleString('fr-FR') + ' $';
+      document.getElementById('kpiPDRating').textContent = scoreGrade;
+      document.getElementById('kpiLGD').textContent = (lgdNet * 100).toFixed(1) + ' %';
+      document.getElementById('kpiECL').textContent = Math.round(ecl).toLocaleString('fr-FR') + ' €';
+      document.getElementById('kpiCapital').textContent = Math.round(cet1Capital).toLocaleString('fr-FR') + ' €';
 
-      // Update Decision Banner
+      // Update Staging Banner
       const banner = document.getElementById('decisionBanner');
-      const icon = document.getElementById('decisionIcon');
-      const text = document.getElementById('decisionText');
-      const sub = document.getElementById('decisionSub');
-      const stageEl = document.getElementById('decisionStage');
+      const stageBadge = document.getElementById('stagingBadge');
+      const decTxt = document.getElementById('decisionTxt');
+      const decDesc = document.getElementById('decisionDesc');
+      const decIcon = document.getElementById('decisionIcon');
 
-      text.textContent = decision;
-      sub.textContent = horizon;
-      stageEl.textContent = stage;
-
-      if (badgeTheme === 'emerald') {
-        banner.className = "p-5 rounded-2xl border transition-all duration-300 bg-emerald-950/40 border-emerald-800/80 flex items-center justify-between";
-        icon.className = "w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl";
-        icon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
-        stageEl.className = "text-xs font-mono uppercase tracking-wider text-emerald-300";
-      } else if (badgeTheme === 'amber') {
-        banner.className = "p-5 rounded-2xl border transition-all duration-300 bg-amber-950/40 border-amber-800/80 flex items-center justify-between";
-        icon.className = "w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-2xl";
-        icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
-        stageEl.className = "text-xs font-mono uppercase tracking-wider text-amber-300";
+      if (stage === 1) {
+        banner.className = "p-5 rounded-2xl border transition-all duration-300 bg-spaceCadet border-safeEmerald/40 flex items-center justify-between";
+        stageBadge.className = "text-xs font-mono uppercase tracking-wider text-safeEmerald font-bold";
+        stageBadge.textContent = "STAGE 1 : RISQUE PERFORMANT (PROVISION 12 MOIS)";
+        decTxt.textContent = "Crédit Éligible (Sain)";
+        decDesc.textContent = "Faible probabilité de défaut et garanties solides. Risque conforme aux limites d'octroi.";
+        decIcon.className = "w-12 h-12 rounded-xl bg-safeEmerald/20 text-safeEmerald flex items-center justify-center text-2xl";
+        decIcon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+      } else if (stage === 2) {
+        banner.className = "p-5 rounded-2xl border transition-all duration-300 bg-spaceCadet border-warnAmber/50 flex items-center justify-between";
+        stageBadge.className = "text-xs font-mono uppercase tracking-wider text-warnAmber font-bold";
+        stageBadge.textContent = "STAGE 2 : DÉTÉRIORATION SIGNIFICATIVE (SICR / LIFETIME)";
+        decTxt.textContent = "Surveillance Approfondie (Watchlist)";
+        decDesc.textContent = "Augmentation sensible du risque de crédit depuis l'origination. Provisionnement sur toute la durée résiduelle.";
+        decIcon.className = "w-12 h-12 rounded-xl bg-warnAmber/20 text-warnAmber flex items-center justify-center text-2xl";
+        decIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
       } else {
-        banner.className = "p-5 rounded-2xl border transition-all duration-300 bg-rose-950/40 border-rose-800/80 flex items-center justify-between";
-        icon.className = "w-12 h-12 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-2xl";
-        icon.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
-        stageEl.className = "text-xs font-mono uppercase tracking-wider text-rose-300";
+        banner.className = "p-5 rounded-2xl border transition-all duration-300 bg-spaceCadet border-critRose/50 flex items-center justify-between";
+        stageBadge.className = "text-xs font-mono uppercase tracking-wider text-critRose font-bold";
+        stageBadge.textContent = "STAGE 3 : CRÉDIT NON PERFORMANT / DÉFAUT (NPL)";
+        decTxt.textContent = "Refus / Provisionnement Total";
+        decDesc.textContent = "Probabilité de défaut critique ou surendettement manifeste. Dépréciation comptable intégrale requise.";
+        decIcon.className = "w-12 h-12 rounded-xl bg-critRose/20 text-critRose flex items-center justify-center text-2xl";
+        decIcon.innerHTML = '<i class="fa-solid fa-ban"></i>';
       }
 
-      // Waterfall bars update
+      // Waterfall Update
       const dtiImpact = (dti * 3.2).toFixed(2);
       const scoreImpact = (scoreNorm * 5.5).toFixed(2);
       const macroImpact = (mFactor > 1 ? (mFactor - 1) * 2.5 : 0).toFixed(2);
@@ -581,19 +646,19 @@
 
       const pivot = { x: 300, y: 190, r: 18, name: "Cpt-7782" };
       const sources = [
-        { x: 100, y: 80, r: 10, name: "Cpt-A ($9.4k)" },
-        { x: 100, y: 150, r: 10, name: "Cpt-B ($9.8k)" },
-        { x: 100, y: 230, r: 10, name: "Cpt-C ($9.2k)" },
-        { x: 100, y: 300, r: 10, name: "Cpt-D ($9.6k)" }
+        { x: 100, y: 80, r: 10, name: "Cpt-A (9 400 €)" },
+        { x: 100, y: 150, r: 10, name: "Cpt-B (9 800 €)" },
+        { x: 100, y: 230, r: 10, name: "Cpt-C (9 200 €)" },
+        { x: 100, y: 300, r: 10, name: "Cpt-D (9 600 €)" }
       ];
-      const target = { x: 530, y: 190, r: 16, name: "Offshore ($38.1k)" };
+      const target = { x: 530, y: 190, r: 16, name: "Offshore (38 000 €)" };
 
-      // Draw Edges
+      // Edges
       sources.forEach(s => {
         ctx.beginPath();
         ctx.moveTo(s.x, s.y);
         ctx.lineTo(pivot.x, pivot.y);
-        ctx.strokeStyle = isAlert ? 'rgba(244, 63, 94, 0.7)' : 'rgba(6, 182, 212, 0.3)';
+        ctx.strokeStyle = isAlert ? 'rgba(244, 63, 94, 0.8)' : 'rgba(91, 192, 190, 0.4)';
         ctx.lineWidth = isAlert ? 2.5 : 1.5;
         ctx.stroke();
       });
@@ -601,22 +666,22 @@
       ctx.beginPath();
       ctx.moveTo(pivot.x, pivot.y);
       ctx.lineTo(target.x, target.y);
-      ctx.strokeStyle = isAlert ? 'rgba(244, 63, 94, 0.9)' : 'rgba(100, 116, 139, 0.3)';
+      ctx.strokeStyle = isAlert ? 'rgba(244, 63, 94, 0.95)' : 'rgba(58, 80, 107, 0.4)';
       ctx.lineWidth = isAlert ? 4 : 2;
       ctx.stroke();
 
-      // Draw Sources
+      // Sources
       sources.forEach(s => {
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = '#06b6d4';
+        ctx.fillStyle = '#5bc0be';
         ctx.fill();
-        ctx.fillStyle = '#94a3b8';
+        ctx.fillStyle = '#f4f5f6';
         ctx.font = '10px "JetBrains Mono"';
         ctx.fillText(s.name, s.x - 30, s.y - 14);
       });
 
-      // Draw Pivot
+      // Pivot
       ctx.beginPath();
       ctx.arc(pivot.x, pivot.y, pivot.r, 0, Math.PI * 2);
       ctx.fillStyle = isAlert ? '#f43f5e' : '#f59e0b';
@@ -630,26 +695,25 @@
       ctx.font = 'bold 11px "JetBrains Mono"';
       ctx.fillText(pivot.name, pivot.x - 26, pivot.y + 30);
 
-      // Draw Target
+      // Target
       ctx.beginPath();
       ctx.arc(target.x, target.y, target.r, 0, Math.PI * 2);
-      ctx.fillStyle = isAlert ? '#e11d48' : '#475569';
+      ctx.fillStyle = isAlert ? '#e11d48' : '#3a506b';
       ctx.fill();
-      ctx.fillStyle = '#cbd5e1';
+      ctx.fillStyle = '#f4f5f6';
       ctx.font = '10px "JetBrains Mono"';
       ctx.fillText(target.name, target.x - 35, target.y + 28);
     }
 
     function triggerAmlAlert() {
       drawAmlGraph(true);
-      document.getElementById('graphStatus').className = "text-xs font-mono text-rose-400 bg-rose-950/80 px-2 py-0.5 rounded border border-rose-800 animate-pulse";
+      document.getElementById('graphStatus').className = "text-xs font-mono text-critRose bg-critRose/20 px-2.5 py-0.5 rounded border border-critRose animate-pulse font-bold";
       document.getElementById('graphStatus').textContent = "⚠️ ALERTE SCHTROUMPFAGE DÉTECTÉE";
 
       document.getElementById('dosEmptyState').classList.add('hidden');
       document.getElementById('dosReportBox').classList.remove('hidden');
     }
 
-    // Init
     window.onload = function() {
       updateRiskCalc();
       drawAmlGraph(false);

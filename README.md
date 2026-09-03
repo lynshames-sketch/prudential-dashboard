@@ -1,93 +1,58 @@
-# Prudential Risk & Banking Surveillance Suite
+# Terminal de Risque Bancaire & Surveillance Réglementaire (`prudential-dashboard`)
 
-> **Suite d'Économétrie Prudentielle & Surveillance Réglementaire (IFRS 9 • Bâle III/IV • AML/CFT)**  
-> **Auteur :** Saubaber Longang Gamo (Ph.D. en Économie • Modélisation Économétrique)
+> **Modélisation Prudentielle du Risque de Contrepartie (*IFRS 9* • *Bâle IV* *IRB*) & Détection Topologique *AML***  
+> **Auteur :** Saubaber Longang Gamo (Ph.D. en Économie • Modélisation Économétrique & Risques Financiers)
 
-[![Standards](https://img.shields.io/badge/Regulatory%20Standards-IFRS%209%20%7C%20Basel%20III--IV%20IRB-06b6d4)](https://www.bis.org/bcbs/basel3.htm)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-10b981?logo=github)](https://lynshames-sketch.github.io/prudential-dashboard/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-5bc0be.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://www.python.org/)
+[![Palette Coolors](https://img.shields.io/badge/Coolors%20Palette-0a1128%20%7C%201c2541%20%7C%203a506b%20%7C%205bc0be%20%7C%20f4f5f6-3a506b)](https://coolors.co/0a1128-1c2541-3a506b-5bc0be-f4f5f6)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-5bc0be?logo=github)](https://lynshames-sketch.github.io/prudential-dashboard/)
 
 ---
 
-## 🌐 Démonstration en Ligne
+## 🎨 Charte Graphique & Palette Coolors Bancaire
 
-L'application est directement accessible en ligne sans installation :  
-👉 **[https://lynshames-sketch.github.io/prudential-dashboard/](https://lynshames-sketch.github.io/prudential-dashboard/)**
+Palette officielle : 🔗 **[https://coolors.co/0a1128-1c2541-3a506b-5bc0be-f4f5f6](https://coolors.co/0a1128-1c2541-3a506b-5bc0be-f4f5f6)**
 
----
-
-## 📌 Présentation du Projet
-
-La **Prudential Risk & Banking Surveillance Suite** (`prudential-dashboard`) est un terminal interactif combinant modélisation économétrique avancée et conformité bancaire internationale.
-
-Conçu à l'intersection de la recherche académique, de l'expérience en banque centrale (ex-BEAC) et des meilleures pratiques d'ingénierie financière, ce système permet d'évaluer le risque de crédit en temps réel et de détecter les schémas complexes de criminalité financière.
+* `#0a1128` : Oxford Blue / Fond sombre d'institution centrale
+* `#1c2541` : Deep Space Cadet / Panneaux et cartes financières
+* `#3a506b` : Steel Slate Blue / Bordures prudentielles et séparateurs
+* `#5bc0be` : Ice Cyan / Indicateurs actifs, courbes et formules
+* `#f4f5f6` : Pure Platinum / Typographie contrastée haute fidélité
 
 ---
 
-## 🏛️ Architecture & Fonctionnalités Clés
+## 📐 Spécifications Économétriques & Prudentielles ($\LaTeX$)
 
-### 1. Moteur de Risque de Crédit & Provisions IFRS 9
-* **Modélisation Logistique de la Probabilité de Défaut (PD)** :
-  $$PD = \frac{1}{1 + e^{-(1.8 + 3.2 \cdot DTI - 5.5 \cdot Score_{norm} + \Delta Macro)}}$$
-* **Atténuation de la Perte en Cas de Défaut (LGD)** selon la qualité des garanties et du collatéral ($LGD_{final} = \max(0.45 - 0.35 \cdot Collat, 0.10)$).
-* **Classification Dynamique IFRS 9** :
-  - **Stage 1 (Actif Sain)** : Provision sur horizon de 12 mois.
-  - **Stage 2 (Dégradation Significative du Risque - SICR)** : Surveillance renforcée et provisionnement sur la durée de vie (*Lifetime ECL*).
-  - **Stage 3 (Actif Déprécié / Défaut)** : Provisionnement intégral pour créance douteuse.
-* **Actifs Pondérés par les Risques (RWA) & Coussin CET1** : Calcul des exigences de fonds propres sous l'approche modèles internes (IRB) de Bâle IV avec coussin prudentiel à 10.5 %.
-* **Graphique en Cascade (Waterfall Chart)** : Décomposition transparente des facteurs explicatifs de risque.
+### 1. Provision pour Pertes Attendues (*IFRS 9* *ECL*)
+$$\text{ECL} = \sum_{t=1}^T \frac{\text{PD}_t \times \text{LGD}_t \times \text{EAD}_t}{(1 + r)^t}$$
 
-### 2. Surveillance Blanchiment d'Argent (AML / KYC Network Graph)
-* **Visualisation Topologique des Flux** : Représentation sur canevas interactif des nœuds de transactions entre comptes émetteurs, compte pivot et comptes destinataires.
-* **Algorithme de Détection du « Schtroumpfage » (Smurfing)** : Identification automatique des dépôts fractionnés sous le seuil légal de déclaration (10 000 $) à haute vélocité.
-* **Générateur Automatique de Déclaration d'Opération Suspecte (DOS)** : Production d'un dossier d'investigation pré-rempli conforme aux directives des Unités de Renseignement Financier (CANAFE, COBAC, BEAC, Tracfin).
+### 2. Modèle Structurel de Vasicek (*Bâle IV* *IRB*)
+$$K = \left[ \text{LGD} \cdot \Phi\left( \frac{\Phi^{-1}(\text{PD}) + \sqrt{\rho}\Phi^{-1}(0.999)}{\sqrt{1-\rho}} \right) - \text{PD} \cdot \text{LGD} \right] \cdot \text{MA}$$
 
----
-
-## 📁 Structure du Répertoire
-
-```
-prudential-dashboard/
-├── index.html            # Interface interactive Tailwind CSS (Stitch Design System)
-├── risk_engine.py        # Moteur de calcul économétrique et de simulation AML
-├── requirements.txt      # Dépendances Python
-├── LICENSE               # Licence MIT
-└── README.md             # Documentation institutionnelle
-```
+### 3. Ratio de Solvabilité *CET1*
+$$\text{Ratio CET1} = \frac{\text{Fonds Propres CET1}}{\text{RWA}} \ge 8.0\% + \text{Buffers}$$
 
 ---
 
 ## 🚀 Démarrage Rapide
 
-### 1. Cloner le Répertoire
 ```bash
 git clone https://github.com/lynshames-sketch/prudential-dashboard.git
 cd prudential-dashboard
-```
-
-### 2. Lancer l'Interface Web
-Vous pouvez lancer le serveur local via Python :
-```bash
 python -m http.server 8085
 ```
-Puis ouvrez votre navigateur sur : **`http://localhost:8085/`**
-
-### 3. Exécuter le Moteur Économétrique en Ligne de Commande
-```bash
-python risk_engine.py
-```
+Accédez ensuite à : **`http://localhost:8085/`**
 
 ---
 
 ## 👤 Auteur
 
 **Saubaber Longang Gamo (Ph.D.)**  
-*Économiste, Expert en Modélisation Économétrique & Évaluation de Politiques Publiques*  
 - **LinkedIn :** [linkedin.com/in/saubaber-longang-18416216a](https://www.linkedin.com/in/saubaber-longang-18416216a)
 
 ---
 
 ## 📄 Licence
 
-Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
+Distribué sous la licence MIT. Voir `LICENSE` pour plus d'informations.
